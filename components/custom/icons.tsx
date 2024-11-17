@@ -61,4 +61,53 @@ export const ChevronDownIcon = ({ size = 16, className }: IconProps) => (
   </svg>
 );
 
+export const SupabaseIcon = ({ size = 32, className }: IconProps) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 109 113"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={cn(className)}
+  >
+    <path
+      d="M63.708 110.284C60.848 113.885 55.05 111.912 54.982 107.314L53.975 40.0627H99.194C107.384 40.0627 111.952 49.5228 106.859 55.9374L63.708 110.284Z"
+      fill="url(#paint0_linear)"
+    />
+    <path
+      d="M63.708 110.284C60.848 113.885 55.05 111.912 54.982 107.314L53.975 40.0627H99.194C107.384 40.0627 111.952 49.5228 106.859 55.9374L63.708 110.284Z"
+      fill="url(#paint1_linear)"
+      fillOpacity="0.2"
+    />
+    <path
+      d="M45.317 2.07103C48.177 -1.53037 53.975 0.442937 54.043 5.041L54.485 72.2922H9.266C1.07642 72.2922 -3.49236 62.8321 1.60138 56.4175L45.317 2.07103Z"
+      fill="#3ECF8E"
+    />
+    <defs>
+      <linearGradient
+        id="paint0_linear"
+        x1="53.975"
+        y1="54.974"
+        x2="94.163"
+        y2="71.829"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="#249361" />
+        <stop offset="1" stopColor="#3ECF8E" />
+      </linearGradient>
+      <linearGradient
+        id="paint1_linear"
+        x1="36.156"
+        y1="30.578"
+        x2="54.484"
+        y2="65.081"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop />
+        <stop offset="1" stopOpacity="0" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
 // Add more icons as needed...
