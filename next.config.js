@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    ppr: true // Enable PPR since you're using canary features
+    ppr: true
   },
   typescript: {
     ignoreBuildErrors: false
@@ -10,7 +10,16 @@ const nextConfig = {
     ignoreDuringBuilds: false
   },
   images: {
-    domains: ['avatar.vercel.sh'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'avatar.vercel.sh'
+      },
+      {
+        protocol: 'https',
+        hostname: 'your-image-domain.com'
+      }
+    ]
   },
   webpack: (config) => {
     config.module.rules.push({
@@ -21,4 +30,4 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig 
+module.exports = nextConfig; 

@@ -1,4 +1,5 @@
 import { Attachment } from 'ai';
+import Image from 'next/image';
 
 import { LoaderIcon } from './icons';
 
@@ -41,3 +42,18 @@ export const PreviewAttachment = ({
     </div>
   );
 };
+
+export const EmptyState = () => (
+  <div className="flex flex-col items-center justify-center p-8 text-center">
+    <Image
+      src="/images/empty-state.png"
+      alt="No messages"
+      width={300}
+      height={300}
+      priority
+      className="mb-8"
+    />
+    <h3 className="mb-2 text-lg font-semibold">No messages yet</h3>
+    <p className="text-muted-foreground">Start a conversation to see messages here.</p>
+  </div>
+);

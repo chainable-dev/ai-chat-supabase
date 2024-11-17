@@ -38,6 +38,7 @@ import {
 import { getChatsByUserIdQuery } from '@/db/queries';
 import { supabase } from '@/lib/supabase/client';
 import { Database } from '@/lib/supabase/types';
+import { EmptyState } from './preview-attachment';
 
 type Chat = Database['public']['Tables']['chats']['Row'];
 
@@ -121,7 +122,7 @@ const ChatItem = ({
 
 export function SidebarHistory({ user }: { user: User | undefined }) {
   const { setOpenMobile } = useSidebar();
-  const { id } = useParams();
+  const { id } = useParams() as { id: string };
   const pathname = usePathname();
   const {
     data: history,
@@ -217,17 +218,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
     return (
       <SidebarGroup>
         <SidebarGroupContent>
-          <div className="text-zinc-500 w-full flex flex-row justify-center items-center text-sm gap-2">
-            <Image
-              src="/images/empty-state.png"
-              alt="Empty state"
-              width={16}
-              height={16}
-            />
-            <div>
-              Your conversations will appear here once you start chatting!
-            </div>
-          </div>
+          <EmptyState />
         </SidebarGroupContent>
       </SidebarGroup>
     );
