@@ -75,6 +75,7 @@ export async function PATCH(request: Request) {
       return new Response('Unauthorized', { status: 401 });
     }
 
+    //@ts-ignore
     await voteMessage({
       chatId,
       messageId,

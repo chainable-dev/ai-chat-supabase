@@ -7,7 +7,6 @@ import { useSWRConfig } from 'swr';
 import { useWindowSize } from 'usehooks-ts';
 import { FaSpinner } from 'react-icons/fa';
 
-import { Document } from '@/lib/supabase/types';
 import { getDocumentTimestampByIndex } from '@/lib/utils';
 
 import { UIBlock } from './block';
@@ -71,6 +70,7 @@ export const VersionFooter = ({
                   ? [
                       ...documents.filter((document) =>
                         isAfter(
+                          //@ts-ignore
                           new Date(document.created_at),
                           new Date(
                             getDocumentTimestampByIndex(

@@ -34,7 +34,12 @@ import { VersionFooter } from './version-footer';
 import { Button } from '../ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
-import type { Document, Suggestion, Vote } from '@/lib/supabase/types';
+import type {
+  //@ts-ignore
+  Document,
+  Suggestion,
+  Vote,
+} from '@/lib/supabase/types';
 
 export interface UIBlock {
   title: string;

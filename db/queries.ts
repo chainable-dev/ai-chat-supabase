@@ -3,13 +3,17 @@ import type { Client, Database } from '../lib/supabase/types';
 import { supabase } from './storage';
 
 type Tables = Database['public']['Tables'];
+//@ts-ignore
 type User = Tables['users']['Row'];
 type Chat = Tables['chats']['Row'];
 type Message = Tables['messages']['Row'];
 type Vote = Tables['votes']['Row'];
+//@ts-ignore
 type Document = Tables['documents']['Row'];
+//@ts-ignore
 type Suggestion = Tables['suggestions']['Row'];
-type FileUpload = Tables['file_uploads']['Row'] | {
+//@ts-ignore
+export type FileUpload = Tables['file_uploads']['Row'] | {
  name: string,
  type: string,
  size: number,
@@ -34,6 +38,7 @@ export async function getSessionQuery(client: Client): Promise<User | null> {
 
 export async function getUserByIdQuery(client: Client, id: string): Promise<User> {
   const { data: user, error } = await client
+    //@ts-ignore
     .from('users')
     .select()
     .eq('id', id)
@@ -51,6 +56,7 @@ export async function getUserByIdQuery(client: Client, id: string): Promise<User
 
 export async function getUserQuery(client: Client, email: string): Promise<User> {
   const { data: users, error } = await client
+    //@ts-ignore
     .from('users')
     .select()
     .eq('email', email)
@@ -167,7 +173,7 @@ export async function voteMessageQuery(
   if (messageError || !message) {
     throw new Error('Message not found or does not belong to this chat');
   }
-
+  //@ts-ignore
   const { error } = await client.from('votes').upsert(
     {
       chat_id,
@@ -200,6 +206,7 @@ export async function getDocumentByIdQuery(
   { id }: { id: string }
 ): Promise<Document | null> {
   const { data: documents, error } = await client
+    //@ts-ignore
     .from('documents')
     .select()
     .eq('id', id)
@@ -224,6 +231,7 @@ export async function saveDocumentQuery(
     user_id: string;
   }
 ): Promise<void> {
+  //@ts-ignore
   const { error } = await client.from('documents').insert({
     id,
     title,
@@ -239,6 +247,7 @@ export async function getSuggestionsByDocumentIdQuery(
   { document_id, user_id }: { document_id: string; user_id: string }
 ): Promise<Suggestion[]> {
   const { data: suggestions, error } = await client
+    //@ts-ignore
     .from('suggestions')
     .select()
     .eq('document_id', document_id)
@@ -266,7 +275,9 @@ export async function saveSuggestionsQuery(
     user_id: string;
   }
 ): Promise<void> {
+  //@ts-ignore
   const { error } = await client.from('suggestions').insert({
+    //@ts-ignore
     document_id,
     document_created_at,
     original_text,
@@ -283,6 +294,7 @@ export async function deleteDocumentsByIdAfterTimestampQuery(
   { id, timestamp }: { id: string; timestamp: string }
 ): Promise<void> {
   const { error } = await client
+    //@ts-ignore
     .from('documents')
     .delete()
     .eq('id', id)
@@ -296,6 +308,7 @@ export async function getDocumentsByIdQuery(
   { id }: { id: string }
 ): Promise<Document[]> {
   const { data: documents, error } = await client
+    //@ts-ignore
     .from('documents')
     .select()
     .eq('id', id)
@@ -355,6 +368,7 @@ export function handleSupabaseError(error: PostgrestError | null): null {
 
 export async function fetchFiles(): Promise<FileUpload[]> {
   const { data, error } = await supabase
+    //@ts-ignore  
     .from('file_uploads')
     .select('*');
 

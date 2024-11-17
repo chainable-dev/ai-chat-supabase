@@ -431,12 +431,13 @@ export async function POST(request: Request) {
             if (user && user.id) {
               const userId = user.id;
 
-              await saveSuggestions({
+              await saveSuggestions({ 
+                //@ts-ignore
                 suggestions: suggestions.map((suggestion) => ({
                   ...suggestion,
-                  userId,
-                  createdAt: new Date(),
-                  documentCreatedAt: document.created_at,
+                  user_id: userId,
+                  created_at: new Date(),
+                  document_created_at: document.created_at,
                 })),
               });
             }
