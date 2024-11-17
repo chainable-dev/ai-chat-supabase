@@ -3,8 +3,8 @@ import { toast } from 'sonner';
 import { useSWRConfig } from 'swr';
 import { useCopyToClipboard } from 'usehooks-ts';
 
-import { Vote } from '@/lib/supabase/types';
-import { getMessageIdFromAnnotations } from '@/lib/utils';
+import { type Vote } from '../../lib/supabase/types';
+import { getMessageIdFromAnnotations } from '../../lib/utils';
 
 import { FaCopy, FaThumbsDown, FaThumbsUp, FaSpinner } from 'react-icons/fa';
 import { Button } from '../ui/button';

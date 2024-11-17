@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { useWindowSize } from 'usehooks-ts';
 
-import { UISuggestion } from '@/lib/editor/suggestions';
+import { type UISuggestion } from '../../lib/editor/suggestions';
 
 import { FaTimes, FaComment } from 'react-icons/fa';
 import { Button } from '../ui/button';

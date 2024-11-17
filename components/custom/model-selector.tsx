@@ -2,16 +2,16 @@
 
 import { startTransition, useMemo, useOptimistic, useState } from 'react';
 
-import { models } from '@/ai/models';
-import { saveModelId } from '@/app/(chat)/actions';
-import { Button } from '@/components/ui/button';
+import { models } from '../../ai/models';
+import { saveModelId } from '../../app/(chat)/actions';
+import { Button } from '../../components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
+} from '../../components/ui/dropdown-menu';
+import { cn } from '../../lib/utils';
 import { FaCheckCircle, FaChevronDown } from 'react-icons/fa';
 
 export function ModelSelector({

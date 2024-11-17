@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 
-import { SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
-import { BetterTooltip } from '@/components/ui/tooltip';
+import { SidebarTrigger, useSidebar } from '../../components/ui/sidebar';
+import { BetterTooltip } from '../../components/ui/tooltip';
 
 import { Button } from '../ui/button';
 import { FaColumns } from 'react-icons/fa';
