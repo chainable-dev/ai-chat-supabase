@@ -14,7 +14,6 @@ describe('Project Structure', () => {
     'app/(chat)/page.tsx',
     'db/mutations.ts',
     'lib/utils.ts',
-    '__tests__/page.test.tsx',
     '__tests__/tsconfig.test.ts',
   ];
 
