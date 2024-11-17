@@ -9,6 +9,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: false
   },
+  images: {
+    domains: ['avatar.vercel.sh'],
+  },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.md$/,

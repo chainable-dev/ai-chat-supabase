@@ -2,6 +2,7 @@
 
 import { User } from '@supabase/supabase-js';
 import { isToday, isYesterday, subMonths, subWeeks } from 'date-fns';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -35,7 +36,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { getChatsByUserIdQuery } from '@/db/queries';
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 import { Database } from '@/lib/supabase/types';
 
 type Chat = Database['public']['Tables']['chats']['Row'];
@@ -84,7 +85,14 @@ const ChatItem = ({
 }) => (
   <SidebarMenuItem>
     <SidebarMenuButton asChild isActive={isActive}>
-      <Link href={`/chat/${chat.id}`} onClick={() => setOpenMobile(false)}>
+      <Link href={`/chat/${chat.id}`} onClick={() => setOpenMobile(false)} className="flex items-center gap-2">
+        <Image 
+          src={`/images/chat-${Number(chat.id) % 5}.png`} 
+          alt="Chat thumbnail"
+          width={24}
+          height={24}
+          className="rounded-sm"
+        />
         <span>{chat.title || 'New Chat'}</span>
       </Link>
     </SidebarMenuButton>
@@ -162,6 +170,12 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
       <SidebarGroup>
         <SidebarGroupContent>
           <div className="text-zinc-500 w-full flex flex-row justify-center items-center text-sm gap-2">
+            <Image
+              src="/images/login-prompt.png"
+              alt="Login prompt"
+              width={16}
+              height={16}
+            />
             <div>Login to save and revisit previous chats!</div>
           </div>
         </SidebarGroupContent>
@@ -182,6 +196,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
                 key={item}
                 className="rounded-md h-8 flex gap-2 px-2 items-center"
               >
+                <div className="w-6 h-6 rounded-sm bg-sidebar-accent-foreground/10" />
                 <div
                   className="h-4 rounded-md flex-1 max-w-[--skeleton-width] bg-sidebar-accent-foreground/10"
                   style={
@@ -203,6 +218,12 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
       <SidebarGroup>
         <SidebarGroupContent>
           <div className="text-zinc-500 w-full flex flex-row justify-center items-center text-sm gap-2">
+            <Image
+              src="/images/empty-state.png"
+              alt="Empty state"
+              width={16}
+              height={16}
+            />
             <div>
               Your conversations will appear here once you start chatting!
             </div>
