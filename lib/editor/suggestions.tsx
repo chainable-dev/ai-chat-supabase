@@ -10,6 +10,8 @@ export interface UISuggestion extends Suggestion {
   selectionStart: number;
   selectionEnd: number;
   id: string;
+  suggested_text: string;
+  user_id: string;
   
 }
 

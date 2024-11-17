@@ -156,13 +156,17 @@ export const getDocumentsById = async (documentId: string) => {
   )();
 };
 
-export const getSuggestionsByDocumentId = async (documentId: string) => {
+export const getSuggestionsByDocumentId = async (
+  documentId: string,
+  userId: string
+) => {
   const supabase = await getSupabase();
 
   return unstable_cache(
     async () => {
       return getSuggestionsByDocumentIdQuery(supabase, {
         documentId: documentId,
+        userId: userId,
       });
     },
     ['suggestions', documentId],
