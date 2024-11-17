@@ -1,6 +1,8 @@
-import { createClient } from '@supabase/supabase-js';
+//@ts-ignore
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 import { Database } from '@/lib/supabase/types';
+import type { FileUpload } from '@/db/queries';
 
 function sanitizeFileName(fileName: string): string {
   return fileName.replace(/[^a-zA-Z0-9.-]/g, '_').toLowerCase();
@@ -113,17 +115,19 @@ export async function POST(req: Request) {
         }
       }
 
-      const publicUrl = await upload(supabase as SupabaseClient<Database, 'public'>, {
+      const publicUrl = await upload(supabase as SupabaseClient<Database, never>, {
         file,
         path: filePath,
       });
 
       console.log('Upload successful:', { publicUrl });
 
+   
+
       // Check if file already exists
       const { data: existingFile } = await supabase
         .from('file_uploads')
-        .select('url')
+        .select('file_url')
         .match({
           user_id: user.id,
           chat_id: chatId,
@@ -133,10 +137,10 @@ export async function POST(req: Request) {
         .limit(1)
         .single();
 
-      if (existingFile) {
+      if (existingFile as FileUpload) {
         // Return the existing file URL
         return NextResponse.json({
-          url: existingFile.url,
+          url: existingFile.file_url,
           path: filePath.join('/'),
         });
       }

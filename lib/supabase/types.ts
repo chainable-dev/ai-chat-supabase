@@ -401,18 +401,7 @@ export function parseDBMessage(dbMessage: DatabaseMessage): Message {
   }
 }
 
-// Add these types to your existing types file
 
-export interface FileUpload {
-  id: string;
-  created_at: string;
-  chat_id: string;
-  file_path: string;
-  file_name: string;
-  file_type: string;
-  file_size: number;
-  public_url: string;
-}
 
 export interface StorageError {
   message: string;

@@ -9,7 +9,12 @@ type Message = Tables['messages']['Row'];
 type Vote = Tables['votes']['Row'];
 type Document = Tables['documents']['Row'];
 type Suggestion = Tables['suggestions']['Row'];
-type FileUpload = Tables['file_uploads']['Row'];
+type FileUpload = Tables['file_uploads']['Row'] | {
+ name: string,
+ type: string,
+ size: number,
+ lastModified: string
+};
 
 export async function getSessionQuery(client: Client): Promise<User | null> {
   const {

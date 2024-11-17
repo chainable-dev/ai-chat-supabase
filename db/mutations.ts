@@ -5,6 +5,9 @@ import {
   PostgrestError,
   type Client,
   type Message,
+  type Chat,
+  type Document,
+  type Suggestion,
 } from '@/lib/supabase/types';
 import { z } from 'zod';
 
@@ -60,26 +63,11 @@ const saveSuggestionsSchema = z.array(z.object({
   isResolved: z.boolean(),
 }));
 
-// Define the Suggestion type
-interface Suggestion {
-  documentId: string;          // ID of the document the suggestion is related to
-  documentCreatedAt: string;   // Creation date of the document
-  originalText: string;        // The original text before the suggestion
-  suggestedText: string;       // The suggested text
-  description?: string;        // Optional description of the suggestion
-  userId: string;              // ID of the user who made the suggestion
-  isResolved: boolean;         // Indicates if the suggestion has been resolved
-}
-
 export async function saveChat({
   id,
   userId,
   title,
-}: {
-  id: string;
-  userId: string;
-  title: string;
-}) {
+}: Chat) {
   // Validate input using Zod
   saveChatSchema.parse({ id, userId, title });
 
