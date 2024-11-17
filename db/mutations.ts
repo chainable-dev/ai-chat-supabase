@@ -6,6 +6,7 @@ import {
   type Client,
   type Message,
 } from '../lib/supabase/types';
+import { z } from 'zod';
 
 const getSupabase = async () => createClient();
 
@@ -22,6 +23,19 @@ async function mutateQuery<T extends any[]>(
     handleDatabaseError(error as PostgrestError);
   }
 }
+
+// Define Zod schemas for validation
+const saveMessagesSchema = z.object({
+  chatId: z.string().nonempty("Chat ID is required"),
+  messages: z.array(z.object({
+    id: z.string().nonempty("Message ID is required"),
+    content: z.string().nonempty("Content is required"),
+    role: z.string().nonempty("Role is required"),
+    created_at: z.string().optional(),
+    toolInvocations: z.array(z.any()).optional(),
+    annotations: z.array(z.any()).optional(),
+  })),
+});
 
 export async function saveChat({
   id,
@@ -67,13 +81,23 @@ export async function deleteChatById(chatId: string, userId: string) {
   );
 }
 
+interface SaveMessagesInput {
+  chatId: string;
+  messages: Message[];
+}
+
 export async function saveMessages({
   chatId,
   messages,
-}: {
-  chatId: string;
-  messages: Message[];
-}) {
+}: SaveMessagesInput) {
+  // Validate input using Zod
+  const validationResult = saveMessagesSchema.safeParse({ chatId, messages });
+  
+  if (!validationResult.success) {
+    console.error('Validation errors:', validationResult.error.format());
+    throw new Error('Invalid input data');
+  }
+
   await mutateQuery(
     async (client, { chatId, messages }) => {
       const formattedMessages = messages.map((message) => {
@@ -97,6 +121,7 @@ export async function saveMessages({
             annotations: message.annotations,
           });
         }
+
         return {
           id: message.id,
           chat_id: chatId,
@@ -237,23 +262,38 @@ export async function saveDocument({
   );
 }
 
+interface Suggestion {
+  documentId: string;
+  documentCreatedAt: string;
+  originalText: string;
+  suggestedText: string;
+  description: string;
+  userId: string;
+  isResolved: boolean;
+}
+
 export async function saveSuggestions({
   suggestions,
 }: {
-  suggestions: Array<{
-    documentId: string;
-    documentCreatedAt: string;
-    originalText: string;
-    suggestedText: string;
-    description: string;
-    userId: string;
-    isResolved: boolean;
-  }>;
+  suggestions: Suggestion[];
 }) {
   await mutateQuery(
     async (client, suggestions) => {
+      const now = new Date().toISOString();
+      type SuggestionInsert = {
+        id: string;
+        document_id: string;
+        document_created_at: string;
+        original_text: string;
+        suggested_text: string;
+        description: string;
+        user_id: string;
+        is_resolved: boolean;
+        created_at: string;
+      };
       const { error } = await client.from('suggestions').insert(
-        suggestions.map((s) => ({
+        suggestions.map((s): SuggestionInsert => ({
+          id: crypto.randomUUID(),
           document_id: s.documentId,
           document_created_at: s.documentCreatedAt,
           original_text: s.originalText,
@@ -261,6 +301,7 @@ export async function saveSuggestions({
           description: s.description,
           user_id: s.userId,
           is_resolved: s.isResolved,
+          created_at: now
         }))
       );
       if (error) throw error;
@@ -272,47 +313,6 @@ export async function saveSuggestions({
         `document_${s.documentId}`,
       ])
       .flat()
-  );
-}
-
-export async function saveSuggestions1({
-  documentId,
-  documentCreatedAt,
-  originalText,
-  suggestedText,
-  description,
-  userId,
-}: {
-  documentId: string;
-  documentCreatedAt: string;
-  originalText: string;
-  suggestedText: string;
-  description?: string;
-  userId: string;
-}) {
-  await mutateQuery(
-    async (client, args) => {
-      const { error } = await client.from('suggestions').insert({
-        document_id: args.documentId,
-        document_created_at: args.documentCreatedAt,
-        original_text: args.originalText,
-        suggested_text: args.suggestedText,
-        description: args.description,
-        user_id: args.userId,
-      });
-      if (error) throw error;
-    },
-    [
-      {
-        documentId,
-        documentCreatedAt,
-        originalText,
-        suggestedText,
-        description,
-        userId,
-      },
-    ],
-    [`document_${documentId}_suggestions`, `document_${documentId}`]
   );
 }
 
