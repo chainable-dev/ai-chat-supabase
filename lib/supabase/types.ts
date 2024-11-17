@@ -417,4 +417,15 @@ export interface FileUpload {
 export interface StorageError {
   message: string;
   statusCode: string;
+}// Define the Suggestion type
+
+export interface Suggestion {
+  documentId: string; // ID of the document the suggestion is related to
+  documentCreatedAt: string; // Creation date of the document
+  originalText: string; // The original text before the suggestion
+  suggestedText: string; // The suggested text
+  description?: string; // Optional description of the suggestion
+  userId: string; // ID of the user who made the suggestion
+  isResolved: boolean; // Indicates if the suggestion has been resolved
 }
+

@@ -5,19 +5,19 @@ import { ChevronUp } from 'lucide-react';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 
-import { LogoutButton } from '@/components/custom/logout-button';
+import { LogoutButton } from '../../components/custom/logout-button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '../../components/ui/dropdown-menu';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar';
+} from '../../components/ui/sidebar';
 
 export function SidebarUserNav({ user }: { user: User }) {
   const { setTheme, theme } = useTheme();

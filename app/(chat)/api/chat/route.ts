@@ -8,24 +8,32 @@ import {
 } from 'ai';
 import { z } from 'zod';
 
-import { customModel } from '@/ai';
-import { models } from '@/ai/models';
-import { blocksPrompt, regularPrompt, systemPrompt } from '@/ai/prompts';
-import { getChatById, getDocumentById, getSession } from '@/db/cached-queries';
+import { customModel } from '../../../../ai';
+import { models } from '../../../../ai/models';
+import {
+  blocksPrompt,
+  regularPrompt,
+  systemPrompt,
+} from '../../../../ai/prompts';
+import {
+  getChatById,
+  getDocumentById,
+  getSession,
+} from '../../../../db/cached-queries';
 import {
   saveChat,
   saveDocument,
   saveMessages,
   saveSuggestions,
   deleteChatById,
-} from '@/db/mutations';
-import { createClient } from '@/lib/supabase/server';
-import { MessageRole } from '@/lib/supabase/types';
+} from '../../../../db/mutations';
+import { createClient } from '../../../../lib/supabase/server';
+import { MessageRole } from '../../../../lib/supabase/types';
 import {
   generateUUID,
   getMostRecentUserMessage,
   sanitizeResponseMessages,
-} from '@/lib/utils';
+} from '../../../../lib/utils';
 
 import { generateTitleFromUserMessage } from '../../actions';
 

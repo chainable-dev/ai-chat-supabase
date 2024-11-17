@@ -4,9 +4,9 @@ import { User } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 import { FaPlus } from 'react-icons/fa';
 
-import { SidebarHistory } from '@/components/custom/sidebar-history';
-import { SidebarUserNav } from '@/components/custom/sidebar-user-nav';
-import { Button } from '@/components/ui/button';
+import { SidebarHistory } from '../../components/custom/sidebar-history';
+import { SidebarUserNav } from '../../components/custom/sidebar-user-nav';
+import { Button } from '../../components/ui/button';
 import {
   Sidebar,
   SidebarContent,
@@ -16,8 +16,8 @@ import {
   SidebarHeader,
   SidebarMenu,
   useSidebar,
-} from '@/components/ui/sidebar';
-import { BetterTooltip } from '@/components/ui/tooltip';
+} from '../../components/ui/sidebar';
+import { BetterTooltip } from '../../components/ui/tooltip';
 
 export function AppSidebar({ user }: { user: User | null }) {
   const router = useRouter();

@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-import { Button } from '@/components/ui/button';
-import { signOut } from '@/db/auth';
+import { Button } from '../../components/ui/button';
+import { signOut } from '../../db/auth';
 
 export function LogoutButton() {
   const router = useRouter();

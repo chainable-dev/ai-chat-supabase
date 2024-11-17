@@ -10,18 +10,18 @@ import {
   documentSchema,
   handleTransaction,
   headingRule,
-} from '@/lib/editor/config';
+} from '../../lib/editor/config';
 import {
   buildContentFromDocument,
   buildDocumentFromContent,
   createDecorations,
-} from '@/lib/editor/functions';
+} from '../../lib/editor/functions';
 import {
   projectWithPositions,
   suggestionsPlugin,
   suggestionsPluginKey,
-} from '@/lib/editor/suggestions';
-import { Suggestion } from '@/lib/supabase/types';
+} from '../../lib/editor/suggestions';
+import { type Suggestion } from '../../lib/supabase/types';
 
 type EditorProps = {
   content: string;
