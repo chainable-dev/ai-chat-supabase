@@ -139,53 +139,6 @@ export async function saveMessages({
   );
 }
 
-export async function voteMessage({
-  chatId,
-  messageId,
-  type,
-}: {
-  chatId: string;
-  messageId: string;
-  type: 'up' | 'down';
-}) {
-  await mutateQuery(
-    async (client, { chatId, messageId, type }) => {
-      // First verify the message exists
-      const { data: message, error: messageError } = await client
-        .from('messages')
-        .select('id')
-        .eq('id', messageId)
-        .single();
-
-      if (messageError || !message) {
-        console.error(
-          'Message not found:',
-          messageError || 'No message with this ID'
-        );
-        throw new Error('Message not found');
-      }
-
-      const { error: updateError } = await client.from('votes').upsert(
-        {
-          chat_id: chatId,
-          message_id: messageId,
-          is_upvoted: type === 'up',
-        },
-        {
-          onConflict: 'chat_id,message_id',
-        }
-      );
-
-      if (updateError) {
-        console.error('Vote error:', updateError);
-        throw updateError;
-      }
-    },
-    [{ chatId, messageId, type }],
-    [`chat_${chatId}_votes`, `chat_${chatId}`]
-  );
-}
-
 export async function saveDocument({
   id,
   title,
