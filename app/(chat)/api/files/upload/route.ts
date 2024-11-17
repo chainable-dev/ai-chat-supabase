@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
-import { Database } from '../../../../../lib/supabase/types';
+import { Database } from '@/lib/supabase/types';
 
 function sanitizeFileName(fileName: string): string {
   return fileName.replace(/[^a-zA-Z0-9.-]/g, '_').toLowerCase();
@@ -113,7 +113,7 @@ export async function POST(req: Request) {
         }
       }
 
-      const publicUrl = await upload(supabase, {
+      const publicUrl = await upload(supabase as SupabaseClient<Database, 'public'>, {
         file,
         path: filePath,
       });
