@@ -1,14 +1,14 @@
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 
-import { DEFAULT_MODEL_NAME, models } from '@/ai/models';
-import { Chat as PreviewChat } from '@/components/custom/chat';
+import { DEFAULT_MODEL_NAME, models } from '../../../../ai/models';
+import { Chat as PreviewChat } from '../../../../components/custom/chat';
 import {
   getChatById,
   getMessagesByChatId,
   getSession,
-} from '@/db/cached-queries';
-import { convertToUIMessages } from '@/lib/utils';
+} from '../../../../db/cached-queries';
+import { convertToUIMessages } from '../../../../lib/utils';
 
 export default async function Page(props: { params: Promise<any> }) {
   const params = await props.params;

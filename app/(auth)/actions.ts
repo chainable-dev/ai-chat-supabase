@@ -2,8 +2,8 @@
 
 import { z } from 'zod';
 
-import { getUser } from '@/db/cached-queries';
-import { createClient } from '@/lib/supabase/server';
+import { getUser } from '../../db/cached-queries';
+import { createClient } from '../../lib/supabase/server';
 
 const authFormSchema = z.object({
   email: z.string().email(),

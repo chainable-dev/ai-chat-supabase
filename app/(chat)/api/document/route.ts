@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
-import { saveDocument } from '@/db/mutations';
-import { createClient } from '@/lib/supabase/server';
+import { saveDocument } from '../../../../db/mutations';
+import { createClient } from '../../../../lib/supabase/server';
 
 export async function GET(req: Request) {
   try {

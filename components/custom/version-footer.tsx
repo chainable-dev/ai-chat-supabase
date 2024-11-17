@@ -5,12 +5,11 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useSWRConfig } from 'swr';
 import { useWindowSize } from 'usehooks-ts';
+import { FaSpinner } from 'react-icons/fa';
 
-import { Document } from '@/lib/supabase/types';
 import { getDocumentTimestampByIndex } from '@/lib/utils';
 
 import { UIBlock } from './block';
-import { LoaderIcon } from './icons';
 import { Button } from '../ui/button';
 
 interface VersionFooterProps {
@@ -71,6 +70,7 @@ export const VersionFooter = ({
                   ? [
                       ...documents.filter((document) =>
                         isAfter(
+                          //@ts-ignore
                           new Date(document.created_at),
                           new Date(
                             getDocumentTimestampByIndex(
@@ -89,7 +89,7 @@ export const VersionFooter = ({
           <div>Restore this version</div>
           {isMutating && (
             <div className="animate-spin">
-              <LoaderIcon />
+              <FaSpinner />
             </div>
           )}
         </Button>

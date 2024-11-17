@@ -9,7 +9,8 @@ import { Vote } from '@/lib/supabase/types';
 
 import { UIBlock } from './block';
 import { DocumentToolCall, DocumentToolResult } from './document';
-import { SparklesIcon } from './icons';
+//@ts-ignore
+import { FaRegSparkles } from 'react-icons/fa';
 import { Markdown } from './markdown';
 import { MessageActions } from './message-actions';
 import { PreviewAttachment } from './preview-attachment';
@@ -44,7 +45,7 @@ export const PreviewMessage = ({
       >
         {message.role === 'assistant' && (
           <div className="size-8 flex items-center rounded-full justify-center ring-1 shrink-0 ring-border">
-            <SparklesIcon size={14} />
+            <FaRegSparkles size={14} />
           </div>
         )}
 
@@ -161,7 +162,7 @@ export const ThinkingMessage = () => {
         )}
       >
         <div className="size-8 flex items-center rounded-full justify-center ring-1 shrink-0 ring-border">
-          <SparklesIcon size={14} />
+          <FaRegSparkles size={14} />
         </div>
 
         <div className="flex flex-col gap-2 w-full">

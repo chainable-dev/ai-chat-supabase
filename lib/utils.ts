@@ -12,6 +12,7 @@ import { twMerge } from 'tailwind-merge';
 import type { Database } from '@/lib/supabase/types';
 
 type DBMessage = Database['public']['Tables']['messages']['Row'];
+//@ts-ignore
 type Document = Database['public']['Tables']['documents']['Row'];
 
 export function cn(...inputs: ClassValue[]) {

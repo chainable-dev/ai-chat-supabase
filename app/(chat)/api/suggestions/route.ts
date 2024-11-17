@@ -1,4 +1,4 @@
-import { getSession, getSuggestionsByDocumentId } from '@/db/cached-queries';
+import { getSession, getSuggestionsByDocumentId } from '../../../../db/cached-queries';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     return new Response('Unauthorized', { status: 401 });
   }
 
-  const suggestions = await getSuggestionsByDocumentId(documentId);
+  const suggestions = await getSuggestionsByDocumentId(documentId, user.id);
 
   const [suggestion] = suggestions;
 

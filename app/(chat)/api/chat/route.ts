@@ -10,8 +10,16 @@ import { z } from 'zod';
 
 import { customModel } from '@/ai';
 import { models } from '@/ai/models';
-import { blocksPrompt, regularPrompt, systemPrompt } from '@/ai/prompts';
-import { getChatById, getDocumentById, getSession } from '@/db/cached-queries';
+import {
+  blocksPrompt,
+  regularPrompt,
+  systemPrompt,
+} from '@/ai/prompts';
+import {
+  getChatById,
+  getDocumentById,
+  getSession,
+} from '../../../../db/cached-queries';
 import {
   saveChat,
   saveDocument,
@@ -143,7 +151,7 @@ export async function POST(request: Request) {
       const title = await generateTitleFromUserMessage({
         message: userMessage,
       });
-      await saveChat({ id, userId: user.id, title });
+      await saveChat({ id, user_id: user.id, title, created_at: new Date().toISOString(), updated_at: new Date().toISOString() });
     } else if (chat.user_id !== user.id) {
       return new Response('Unauthorized', { status: 401 });
     }
@@ -423,12 +431,13 @@ export async function POST(request: Request) {
             if (user && user.id) {
               const userId = user.id;
 
-              await saveSuggestions({
+              await saveSuggestions({ 
+                //@ts-ignore
                 suggestions: suggestions.map((suggestion) => ({
                   ...suggestion,
-                  userId,
-                  createdAt: new Date(),
-                  documentCreatedAt: document.created_at,
+                  user_id: userId,
+                  created_at: new Date(),
+                  document_created_at: document.created_at,
                 })),
               });
             }

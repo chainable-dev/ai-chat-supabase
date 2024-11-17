@@ -13,260 +13,72 @@ export type Database = {
     Tables: {
       chats: {
         Row: {
-          created_at: string;
           id: string;
-          title: string | null;
+          user_id: string;
+          title: string;
+          created_at: string;
           updated_at: string;
-          user_id: string;
         };
         Insert: {
-          created_at?: string;
           id?: string;
-          title?: string | null;
-          updated_at?: string;
           user_id: string;
+          title: string;
+          created_at?: string;
+          updated_at?: string;
         };
         Update: {
-          created_at?: string;
           id?: string;
-          title?: string | null;
-          updated_at?: string;
           user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'chats_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-      documents: {
-        Row: {
-          content: string | null;
-          created_at: string;
-          id: string;
-          title: string;
-          user_id: string;
-        };
-        Insert: {
-          content?: string | null;
-          created_at?: string;
-          id?: string;
-          title: string;
-          user_id: string;
-        };
-        Update: {
-          content?: string | null;
-          created_at?: string;
-          id?: string;
           title?: string;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'documents_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-      file_uploads: {
-        Row: {
-          bucket_id: string;
-          chat_id: string;
-          content_type: string;
-          created_at: string;
-          filename: string;
-          id: string;
-          original_name: string;
-          size: number;
-          storage_path: string;
-          url: string;
-          user_id: string;
-          version: number;
-        };
-        Insert: {
-          bucket_id?: string;
-          chat_id: string;
-          content_type: string;
           created_at?: string;
-          filename: string;
-          id?: string;
-          original_name: string;
-          size: number;
-          storage_path: string;
-          url: string;
-          user_id: string;
-          version?: number;
+          updated_at?: string;
         };
-        Update: {
-          bucket_id?: string;
-          chat_id?: string;
-          content_type?: string;
-          created_at?: string;
-          filename?: string;
-          id?: string;
-          original_name?: string;
-          size?: number;
-          storage_path?: string;
-          url?: string;
-          user_id?: string;
-          version?: number;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'file_uploads_chat_id_fkey';
-            columns: ['chat_id'];
-            isOneToOne: false;
-            referencedRelation: 'chats';
-            referencedColumns: ['id'];
-          },
-        ];
       };
       messages: {
         Row: {
-          chat_id: string;
-          content: Json;
-          created_at: string;
           id: string;
+          chat_id: string;
           role: string;
-          updated_at: string;
+          content: string;
+          created_at: string;
         };
         Insert: {
-          chat_id: string;
-          content: Json;
-          created_at?: string;
           id?: string;
+          chat_id: string;
           role: string;
-          updated_at?: string;
+          content: string;
+          created_at?: string;
         };
         Update: {
+          id?: string;
           chat_id?: string;
-          content?: Json;
-          created_at?: string;
-          id?: string;
           role?: string;
-          updated_at?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'messages_chat_id_fkey';
-            columns: ['chat_id'];
-            isOneToOne: false;
-            referencedRelation: 'chats';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-      suggestions: {
-        Row: {
-          created_at: string;
-          description: string | null;
-          document_created_at: string;
-          document_id: string;
-          id: string;
-          is_resolved: boolean;
-          original_text: string;
-          suggested_text: string;
-          user_id: string;
-        };
-        Insert: {
+          content?: string;
           created_at?: string;
-          description?: string | null;
-          document_created_at: string;
-          document_id: string;
-          id?: string;
-          is_resolved?: boolean;
-          original_text: string;
-          suggested_text: string;
-          user_id: string;
         };
-        Update: {
-          created_at?: string;
-          description?: string | null;
-          document_created_at?: string;
-          document_id?: string;
-          id?: string;
-          is_resolved?: boolean;
-          original_text?: string;
-          suggested_text?: string;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'suggestions_document_id_document_created_at_fkey';
-            columns: ['document_id', 'document_created_at'];
-            isOneToOne: false;
-            referencedRelation: 'documents';
-            referencedColumns: ['id', 'created_at'];
-          },
-          {
-            foreignKeyName: 'suggestions_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
-      users: {
-        Row: {
-          created_at: string;
-          email: string;
-          id: string;
-          updated_at: string;
-        };
-        Insert: {
-          created_at?: string;
-          email: string;
-          id?: string;
-          updated_at?: string;
-        };
-        Update: {
-          created_at?: string;
-          email?: string;
-          id?: string;
-          updated_at?: string;
-        };
-        Relationships: [];
       };
       votes: {
         Row: {
+          id: string;
           chat_id: string;
-          is_upvoted: boolean;
-          message_id: string;
+          user_id: string;
+          vote: number;
+          created_at: string;
         };
         Insert: {
+          id?: string;
           chat_id: string;
-          is_upvoted: boolean;
-          message_id: string;
+          user_id: string;
+          vote: number;
+          created_at?: string;
         };
         Update: {
+          id?: string;
           chat_id?: string;
-          is_upvoted?: boolean;
-          message_id?: string;
+          user_id?: string;
+          vote?: number;
+          created_at?: string;
         };
-        Relationships: [
-          {
-            foreignKeyName: 'votes_chat_id_fkey';
-            columns: ['chat_id'];
-            isOneToOne: false;
-            referencedRelation: 'chats';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'votes_message_id_fkey';
-            columns: ['message_id'];
-            isOneToOne: false;
-            referencedRelation: 'messages';
-            referencedColumns: ['id'];
-          },
-        ];
       };
     };
     Views: {
@@ -515,11 +327,8 @@ export function handleDatabaseError(error: PostgrestError | null) {
 }
 
 // Add Document type
-export type Document = Database['public']['Tables']['documents']['Row'];
 export type Vote = Database['public']['Tables']['votes']['Row'];
 export type Chat = Database['public']['Tables']['chats']['Row'];
-
-export type Suggestion = Database['public']['Tables']['suggestions']['Row'];
 
 // Add DatabaseMessage type to match the database schema
 export interface DatabaseMessage {
@@ -592,20 +401,27 @@ export function parseDBMessage(dbMessage: DatabaseMessage): Message {
   }
 }
 
-// Add these types to your existing types file
 
-export interface FileUpload {
-  id: string;
-  created_at: string;
-  chat_id: string;
-  file_path: string;
-  file_name: string;
-  file_type: string;
-  file_size: number;
-  public_url: string;
-}
 
 export interface StorageError {
   message: string;
   statusCode: string;
+}// Define the Suggestion type
+
+export interface Suggestion {
+  //@ts-ignore
+  document_id: string; // ID of the document the suggestion is related to
+  //@ts-ignore
+  document_created_at: string; // Creation date of the document
+  //@ts-ignore
+  original_text: string; // The original text before the suggestion
+  //@ts-ignore
+  suggested_text: string; // The suggested text
+  //@ts-ignore
+  description?: string; // Optional description of the suggestion
+  //@ts-ignore
+  user_id: string; // ID of the user who made the suggestion
+  //@ts-ignore
+  is_resolved: boolean; // Indicates if the suggestion has been resolved
 }
+

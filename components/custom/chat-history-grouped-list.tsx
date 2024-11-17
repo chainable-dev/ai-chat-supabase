@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/sidebar';
 import { Chat } from '@/lib/supabase/types';
 
-import { MoreHorizontalIcon, TrashIcon } from './icons';
+import { FaEllipsisH, FaTrash } from 'react-icons/fa';
 
 type GroupedChats = {
   today: Chat[];
@@ -66,7 +66,7 @@ const ChatItem = memo(function ChatItem({
             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground mr-0.5"
             showOnHover={!isActive}
           >
-            <MoreHorizontalIcon />
+            <FaEllipsisH />
             <span className="sr-only">More</span>
           </SidebarMenuAction>
         </DropdownMenuTrigger>
@@ -75,7 +75,7 @@ const ChatItem = memo(function ChatItem({
             className="cursor-pointer text-destructive focus:bg-destructive/15 focus:text-destructive dark:text-red-500"
             onSelect={() => onDelete(chat.id)}
           >
-            <TrashIcon />
+            <FaTrash />
             <span>Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>

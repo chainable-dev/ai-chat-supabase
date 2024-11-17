@@ -3,7 +3,7 @@ import 'server-only';
 import { cache } from 'react';
 import { unstable_cache } from 'next/cache';
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '../lib/supabase/server';
 import {
   getChatByIdQuery,
   getUserQuery,
@@ -16,7 +16,7 @@ import {
   getSessionQuery,
   getUserByIdQuery,
   getChatWithMessagesQuery,
-} from '@/db/queries';
+} from '../db/queries';
 
 const getSupabase = cache(() => createClient());
 
@@ -86,7 +86,7 @@ export const getChatsByUserId = async (userId: string) => {
 
   return unstable_cache(
     async () => {
-      return getChatsByUserIdQuery(supabase, { id: userId });
+      return getChatsByUserIdQuery(supabase, { user_id: userId });
     },
     ['chats', userId],
     {
@@ -156,13 +156,17 @@ export const getDocumentsById = async (documentId: string) => {
   )();
 };
 
-export const getSuggestionsByDocumentId = async (documentId: string) => {
+export const getSuggestionsByDocumentId = async (
+  documentId: string,
+  userId: string
+) => {
   const supabase = await getSupabase();
 
   return unstable_cache(
     async () => {
       return getSuggestionsByDocumentIdQuery(supabase, {
-        documentId: documentId,
+        document_id: documentId,
+        user_id: userId,
       });
     },
     ['suggestions', documentId],

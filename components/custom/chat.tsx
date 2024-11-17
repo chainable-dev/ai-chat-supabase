@@ -7,11 +7,14 @@ import { useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { useWindowSize } from 'usehooks-ts';
 
-import { ChatHeader } from '@/components/custom/chat-header';
-import { PreviewMessage, ThinkingMessage } from '@/components/custom/message';
-import { useScrollToBottom } from '@/components/custom/use-scroll-to-bottom';
-import { Database } from '@/lib/supabase/types';
-import { fetcher } from '@/lib/utils';
+import { ChatHeader } from '../../components/custom/chat-header';
+import {
+  PreviewMessage,
+  ThinkingMessage,
+} from '../../components/custom/message';
+import { useScrollToBottom } from '../../components/custom/use-scroll-to-bottom';
+import { type Database } from '../../lib/supabase/types';
+import { fetcher } from '../../lib/utils';
 
 import { Block, UIBlock } from './block';
 import { BlockStreamHandler } from './block-stream-handler';
@@ -98,7 +101,7 @@ export function Chat({
               isLoading={isLoading && messages.length - 1 === index}
               vote={
                 votes
-                  ? votes.find((vote) => vote.message_id === message.id)
+                  ? votes.find((vote) => vote.chat_id === id)
                   : undefined
               }
             />
@@ -122,12 +125,8 @@ export function Chat({
             setInput={setInput}
             handleSubmit={handleSubmit}
             isLoading={isLoading}
-            stop={stop}
             attachments={attachments}
             setAttachments={setAttachments}
-            messages={messages}
-            setMessages={setMessages}
-            append={append}
           />
         </form>
       </div>

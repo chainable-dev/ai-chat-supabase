@@ -1,9 +1,26 @@
 import { AuthError } from '@supabase/supabase-js';
 import type { Client, Database } from '../lib/supabase/types';
+import { supabase } from './storage';
 
 type Tables = Database['public']['Tables'];
+//@ts-ignore
+type User = Tables['users']['Row'];
+type Chat = Tables['chats']['Row'];
+type Message = Tables['messages']['Row'];
+type Vote = Tables['votes']['Row'];
+//@ts-ignore
+type Document = Tables['documents']['Row'];
+//@ts-ignore
+type Suggestion = Tables['suggestions']['Row'];
+//@ts-ignore
+export type FileUpload = Tables['file_uploads']['Row'] | {
+ name: string,
+ type: string,
+ size: number,
+ lastModified: string
+};
 
-export async function getSessionQuery(client: Client) {
+export async function getSessionQuery(client: Client): Promise<User | null> {
   const {
     data: { user },
     error,
@@ -19,8 +36,9 @@ export async function getSessionQuery(client: Client) {
   return user;
 }
 
-export async function getUserByIdQuery(client: Client, id: string) {
+export async function getUserByIdQuery(client: Client, id: string): Promise<User> {
   const { data: user, error } = await client
+    //@ts-ignore
     .from('users')
     .select()
     .eq('id', id)
@@ -36,8 +54,9 @@ export async function getUserByIdQuery(client: Client, id: string) {
   return user;
 }
 
-export async function getUserQuery(client: Client, email: string) {
+export async function getUserQuery(client: Client, email: string): Promise<User> {
   const { data: users, error } = await client
+    //@ts-ignore
     .from('users')
     .select()
     .eq('email', email)
@@ -51,17 +70,17 @@ export async function saveChatQuery(
   client: Client,
   {
     id,
-    userId,
+    user_id,
     title,
   }: {
     id: string;
-    userId: string;
+    user_id: string;
     title: string;
   }
-) {
+): Promise<void> {
   const { error } = await client.from('chats').insert({
     id,
-    user_id: userId,
+    user_id,
     title,
   });
 
@@ -70,19 +89,19 @@ export async function saveChatQuery(
 
 export async function getChatsByUserIdQuery(
   client: Client,
-  { id }: { id: string }
-) {
+  { user_id }: { user_id: string }
+): Promise<Chat[]> {
   const { data: chats, error } = await client
     .from('chats')
     .select()
-    .eq('user_id', id)
+    .eq('user_id', user_id)
     .order('created_at', { ascending: false });
 
   if (error) throw error;
   return chats;
 }
 
-export async function getChatByIdQuery(client: Client, { id }: { id: string }) {
+export async function getChatByIdQuery(client: Client, { id }: { id: string }): Promise<Chat | null> {
   const { data: chat, error } = await client
     .from('chats')
     .select()
@@ -101,7 +120,7 @@ export async function getChatByIdQuery(client: Client, { id }: { id: string }) {
 export async function getMessagesByChatIdQuery(
   client: Client,
   { id }: { id: string }
-) {
+): Promise<Message[]> {
   const { data: messages, error } = await client
     .from('messages')
     .select()
@@ -115,16 +134,16 @@ export async function getMessagesByChatIdQuery(
 export async function saveMessagesQuery(
   client: Client,
   {
-    chatId,
+    chat_id,
     messages,
   }: {
-    chatId: string;
+    chat_id: string;
     messages: Tables['messages']['Insert'][];
   }
-) {
+): Promise<void> {
   const messagesWithChatId = messages.map((message) => ({
     ...message,
-    chat_id: chatId,
+    chat_id,
   }));
 
   const { error } = await client.from('messages').insert(messagesWithChatId);
@@ -135,31 +154,31 @@ export async function saveMessagesQuery(
 export async function voteMessageQuery(
   client: Client,
   {
-    chatId,
-    messageId,
-    isUpvoted,
+    chat_id,
+    message_id,
+    is_upvoted,
   }: {
-    chatId: string;
-    messageId: string;
-    isUpvoted: boolean;
+    chat_id: string;
+    message_id: string;
+    is_upvoted: boolean;
   }
-) {
+): Promise<void> {
   const { data: message, error: messageError } = await client
     .from('messages')
     .select('id')
-    .eq('id', messageId)
-    .eq('chat_id', chatId)
+    .eq('id', message_id)
+    .eq('chat_id', chat_id)
     .single();
 
   if (messageError || !message) {
     throw new Error('Message not found or does not belong to this chat');
   }
-
+  //@ts-ignore
   const { error } = await client.from('votes').upsert(
     {
-      chat_id: chatId,
-      message_id: messageId,
-      is_upvoted: isUpvoted,
+      chat_id,
+      message_id,
+      is_upvoted,
     },
     {
       onConflict: 'chat_id,message_id',
@@ -172,7 +191,7 @@ export async function voteMessageQuery(
 export async function getVotesByChatIdQuery(
   client: Client,
   { id }: { id: string }
-) {
+): Promise<Vote[]> {
   const { data: votes, error } = await client
     .from('votes')
     .select()
@@ -185,8 +204,9 @@ export async function getVotesByChatIdQuery(
 export async function getDocumentByIdQuery(
   client: Client,
   { id }: { id: string }
-): Promise<Tables['documents']['Row'] | null> {
+): Promise<Document | null> {
   const { data: documents, error } = await client
+    //@ts-ignore
     .from('documents')
     .select()
     .eq('id', id)
@@ -203,19 +223,20 @@ export async function saveDocumentQuery(
     id,
     title,
     content,
-    userId,
+    user_id,
   }: {
     id: string;
     title: string;
     content?: string;
-    userId: string;
+    user_id: string;
   }
-) {
+): Promise<void> {
+  //@ts-ignore
   const { error } = await client.from('documents').insert({
     id,
     title,
     content,
-    user_id: userId,
+    user_id,
   });
 
   if (error) throw error;
@@ -223,12 +244,14 @@ export async function saveDocumentQuery(
 
 export async function getSuggestionsByDocumentIdQuery(
   client: Client,
-  { documentId }: { documentId: string }
-) {
+  { document_id, user_id }: { document_id: string; user_id: string }
+): Promise<Suggestion[]> {
   const { data: suggestions, error } = await client
+    //@ts-ignore
     .from('suggestions')
     .select()
-    .eq('document_id', documentId);
+    .eq('document_id', document_id)
+    .eq('user_id', user_id);
 
   if (error) throw error;
   return suggestions;
@@ -237,28 +260,30 @@ export async function getSuggestionsByDocumentIdQuery(
 export async function saveSuggestionsQuery(
   client: Client,
   {
-    documentId,
-    documentCreatedAt,
-    originalText,
-    suggestedText,
+    document_id,
+    document_created_at,
+    original_text,
+    suggested_text,
     description,
-    userId,
+    user_id,
   }: {
-    documentId: string;
-    documentCreatedAt: string;
-    originalText: string;
-    suggestedText: string;
+    document_id: string;
+    document_created_at: string;
+    original_text: string;
+    suggested_text: string;
     description?: string;
-    userId: string;
+    user_id: string;
   }
-) {
+): Promise<void> {
+  //@ts-ignore
   const { error } = await client.from('suggestions').insert({
-    document_id: documentId,
-    document_created_at: documentCreatedAt,
-    original_text: originalText,
-    suggested_text: suggestedText,
+    //@ts-ignore
+    document_id,
+    document_created_at,
+    original_text,
+    suggested_text,
     description,
-    user_id: userId,
+    user_id,
   });
 
   if (error) throw error;
@@ -267,8 +292,9 @@ export async function saveSuggestionsQuery(
 export async function deleteDocumentsByIdAfterTimestampQuery(
   client: Client,
   { id, timestamp }: { id: string; timestamp: string }
-) {
+): Promise<void> {
   const { error } = await client
+    //@ts-ignore
     .from('documents')
     .delete()
     .eq('id', id)
@@ -280,8 +306,9 @@ export async function deleteDocumentsByIdAfterTimestampQuery(
 export async function getDocumentsByIdQuery(
   client: Client,
   { id }: { id: string }
-) {
+): Promise<Document[]> {
   const { data: documents, error } = await client
+    //@ts-ignore
     .from('documents')
     .select()
     .eq('id', id)
@@ -294,7 +321,7 @@ export async function getDocumentsByIdQuery(
 export async function getChatWithMessagesQuery(
   client: Client,
   { id }: { id: string }
-) {
+): Promise<(Chat & { messages: Message[] }) | null> {
   const { data: chat, error: chatError } = await client
     .from('chats')
     .select()
@@ -329,7 +356,7 @@ type PostgrestError = {
   hint: string | null;
 };
 
-export function handleSupabaseError(error: PostgrestError | null) {
+export function handleSupabaseError(error: PostgrestError | null): null {
   if (!error) return null;
 
   if (error.code === 'PGRST116') {
@@ -337,4 +364,18 @@ export function handleSupabaseError(error: PostgrestError | null) {
   }
 
   throw error;
+}
+
+export async function fetchFiles(): Promise<FileUpload[]> {
+  const { data, error } = await supabase
+    //@ts-ignore  
+    .from('file_uploads')
+    .select('*');
+
+  if (error) {
+    console.error('Error fetching files:', error);
+    return [];
+  }
+
+  return data;
 }

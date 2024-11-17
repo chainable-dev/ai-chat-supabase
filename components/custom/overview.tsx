@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-
-import { MessageIcon, SupabaseIcon, VercelIcon } from './icons';
+import { FaFacebookMessenger, FaBook, FaPlus } from 'react-icons/fa';
 
 export const Overview = () => {
   return (
@@ -15,11 +14,11 @@ export const Overview = () => {
     >
       <div className="rounded-xl p-6 flex flex-col gap-8 leading-relaxed text-center max-w-xl">
         <p className="flex flex-row justify-center gap-4 items-center">
-          <VercelIcon size={32} />
+          <FaFacebookMessenger size={32} />
           <span>+</span>
-          <SupabaseIcon />
+          <FaBook size={32} />
           <span>+</span>
-          <MessageIcon size={32} />
+          <FaPlus size={32} />
         </p>
         <p>
           This is an{' '}

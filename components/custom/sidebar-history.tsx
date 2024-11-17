@@ -2,13 +2,14 @@
 
 import { User } from '@supabase/supabase-js';
 import { isToday, isYesterday, subMonths, subWeeks } from 'date-fns';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import useSWR from 'swr';
 
-import { MoreHorizontalIcon, TrashIcon } from '@/components/custom/icons';
+import { FaEllipsisH, FaTrash } from 'react-icons/fa';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,13 +19,13 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+} from '../../components/ui/alert-dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '../../components/ui/dropdown-menu';
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -33,10 +34,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@/components/ui/sidebar';
-import { getChatsByUserIdQuery } from '@/db/queries';
-import { createClient } from '@/lib/supabase/client';
-import { Database } from '@/lib/supabase/types';
+} from '../../components/ui/sidebar';
+import { getChatsByUserIdQuery } from '../../db/queries';
+import { supabase } from '../../lib/supabase/client';
+import { type Database } from '../../lib/supabase/types';
+import { EmptyState } from './preview-attachment';
 
 type Chat = Database['public']['Tables']['chats']['Row'];
 
@@ -50,31 +52,23 @@ type GroupedChats = {
 
 const fetcher = async (): Promise<Chat[]> => {
   try {
-    const supabase = createClient();
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-
-    if (userError || !user) {
-      console.error('Auth error:', userError);
-      return [];
-    }
-
-    const { data: chats, error: chatsError } = await supabase
+    const { data, error } = await supabase
       .from('chats')
       .select('*')
-      .eq('user_id', user.id)
       .order('created_at', { ascending: false });
 
-    if (chatsError) {
-      console.error('Chats fetch error:', chatsError);
-      return [];
+    if (error) {
+      console.error('Chats fetch error:', {
+        code: error.code,
+        details: error.details,
+        message: error.message
+      });
+      throw error;
     }
 
-    return chats || [];
-  } catch (error) {
-    console.error('Fetcher error:', error);
+    return data || [];
+  } catch (err) {
+    console.error('Chats fetch error:', err);
     return [];
   }
 };
@@ -92,7 +86,14 @@ const ChatItem = ({
 }) => (
   <SidebarMenuItem>
     <SidebarMenuButton asChild isActive={isActive}>
-      <Link href={`/chat/${chat.id}`} onClick={() => setOpenMobile(false)}>
+      <Link href={`/chat/${chat.id}`} onClick={() => setOpenMobile(false)} className="flex items-center gap-2">
+        <Image 
+          src={`/images/chat-${Number(chat.id) % 5}.png`} 
+          alt="Chat thumbnail"
+          width={24}
+          height={24}
+          className="rounded-sm"
+        />
         <span>{chat.title || 'New Chat'}</span>
       </Link>
     </SidebarMenuButton>
@@ -102,7 +103,7 @@ const ChatItem = ({
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground mr-0.5"
           showOnHover={!isActive}
         >
-          <MoreHorizontalIcon />
+          <FaEllipsisH />
           <span className="sr-only">More</span>
         </SidebarMenuAction>
       </DropdownMenuTrigger>
@@ -111,7 +112,7 @@ const ChatItem = ({
           className="cursor-pointer text-destructive focus:bg-destructive/15 focus:text-destructive dark:text-red-500"
           onSelect={() => onDelete(chat.id)}
         >
-          <TrashIcon />
+          <FaTrash />
           <span>Delete</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -121,7 +122,7 @@ const ChatItem = ({
 
 export function SidebarHistory({ user }: { user: User | undefined }) {
   const { setOpenMobile } = useSidebar();
-  const { id } = useParams();
+  const { id } = useParams() as { id: string };
   const pathname = usePathname();
   const {
     data: history,
@@ -170,6 +171,12 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
       <SidebarGroup>
         <SidebarGroupContent>
           <div className="text-zinc-500 w-full flex flex-row justify-center items-center text-sm gap-2">
+            <Image
+              src="/images/login-prompt.png"
+              alt="Login prompt"
+              width={16}
+              height={16}
+            />
             <div>Login to save and revisit previous chats!</div>
           </div>
         </SidebarGroupContent>
@@ -190,6 +197,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
                 key={item}
                 className="rounded-md h-8 flex gap-2 px-2 items-center"
               >
+                <div className="w-6 h-6 rounded-sm bg-sidebar-accent-foreground/10" />
                 <div
                   className="h-4 rounded-md flex-1 max-w-[--skeleton-width] bg-sidebar-accent-foreground/10"
                   style={
@@ -210,11 +218,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
     return (
       <SidebarGroup>
         <SidebarGroupContent>
-          <div className="text-zinc-500 w-full flex flex-row justify-center items-center text-sm gap-2">
-            <div>
-              Your conversations will appear here once you start chatting!
-            </div>
-          </div>
+          <EmptyState />
         </SidebarGroupContent>
       </SidebarGroup>
     );

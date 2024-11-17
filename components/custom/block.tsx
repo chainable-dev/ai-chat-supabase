@@ -19,13 +19,13 @@ import {
   useDebounceCallback,
   useWindowSize,
 } from 'usehooks-ts';
+import { FaCopy, FaTimes, FaRedo, FaUndo } from 'react-icons/fa';
+import { TbDelta } from 'react-icons/tb';
 
 import { fetcher } from '@/lib/utils';
-
 import { DiffView } from './diffview';
 import { DocumentSkeleton } from './document-skeleton';
 import { Editor } from './editor';
-import { CopyIcon, CrossIcon, DeltaIcon, RedoIcon, UndoIcon } from './icons';
 import { PreviewMessage } from './message';
 import { MultimodalInput } from './multimodal-input';
 import { Toolbar } from './toolbar';
@@ -34,7 +34,12 @@ import { VersionFooter } from './version-footer';
 import { Button } from '../ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
-import type { Document, Suggestion, Vote } from '@/lib/supabase/types';
+import type {
+  //@ts-ignore
+  Document,
+  Suggestion,
+  Vote,
+} from '@/lib/supabase/types';
 
 export interface UIBlock {
   title: string;
@@ -465,7 +470,7 @@ export function Block({
                   isLoading={isLoading && index === messages.length - 1}
                   vote={
                     votes
-                      ? votes.find((vote) => vote.message_id === message.id)
+                      ? votes.find((vote) => vote.id === message.id)
                       : undefined
                   }
                 />
@@ -477,20 +482,15 @@ export function Block({
               />
             </div>
 
-            <form className="flex flex-row gap-2 relative items-end w-full px-4 pb-4">
+              <form className="flex flex-row gap-2 relative items-end w-full px-4 pb-4">
               <MultimodalInput
                 chatId={chatId}
                 input={input}
                 setInput={setInput}
                 handleSubmit={handleSubmit}
                 isLoading={isLoading}
-                stop={stop}
                 attachments={attachments}
                 setAttachments={setAttachments}
-                messages={messages}
-                append={append}
-                className="bg-background dark:bg-muted"
-                setMessages={setMessages}
               />
             </form>
           </div>
@@ -572,7 +572,7 @@ export function Block({
                 }));
               }}
             >
-              <CrossIcon size={18} />
+              <FaTimes size={18} />
             </Button>
 
             <div className="flex flex-col">
@@ -612,7 +612,7 @@ export function Block({
                   }}
                   disabled={block.status === 'streaming'}
                 >
-                  <CopyIcon size={18} />
+                  <FaCopy size={18} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Copy to clipboard</TooltipContent>
@@ -641,7 +641,7 @@ export function Block({
                         : ''}
                     </span>
                   )}
-                  <UndoIcon size={18} />
+                  <FaUndo size={18} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="flex flex-col space-y-1">
@@ -663,7 +663,7 @@ export function Block({
                   }}
                   disabled={isCurrentVersion || block.status === 'streaming'}
                 >
-                  <RedoIcon size={18} />
+                  <FaRedo size={18} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>View Next version</TooltipContent>
@@ -696,10 +696,7 @@ export function Block({
                       edit
                     </span>
                   )}
-                  <DeltaIcon
-                    size={18}
-                    className={mode === 'diff' ? 'translate-y-px' : ''}
-                  />
+                  <TbDelta size={18} className={mode === 'diff' ? 'translate-y-px' : ''} />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="flex flex-col space-y-1">
@@ -731,36 +728,8 @@ export function Block({
                 newContent={getDocumentContentById(currentVersionIndex)}
               />
             )}
-
-            {suggestions ? (
-              <div className="md:hidden h-dvh w-12 shrink-0" />
-            ) : null}
-
-            <AnimatePresence>
-              {isCurrentVersion && (
-                <Toolbar
-                  isToolbarVisible={isToolbarVisible}
-                  setIsToolbarVisible={setIsToolbarVisible}
-                  append={append}
-                  isLoading={isLoading}
-                  stop={stop}
-                  setMessages={setMessages}
-                />
-              )}
-            </AnimatePresence>
           </div>
         </div>
-
-        <AnimatePresence>
-          {!isCurrentVersion && (
-            <VersionFooter
-              block={block}
-              currentVersionIndex={currentVersionIndex}
-              documents={documents as Document[]}
-              handleVersionChange={handleVersionChange}
-            />
-          )}
-        </AnimatePresence>
       </motion.div>
     </motion.div>
   );

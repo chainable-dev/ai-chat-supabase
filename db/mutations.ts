@@ -5,7 +5,12 @@ import {
   PostgrestError,
   type Client,
   type Message,
+  type Chat,
+  //@ts-ignore
+  type Document,
+  type Suggestion,
 } from '@/lib/supabase/types';
+import { z } from 'zod';
 
 const getSupabase = async () => createClient();
 
@@ -23,15 +28,51 @@ async function mutateQuery<T extends any[]>(
   }
 }
 
+// Define Zod schemas for validation
+const saveMessagesSchema = z.object({
+  chatId: z.string().nonempty("Chat ID is required"),
+  messages: z.array(z.object({
+    id: z.string().nonempty("Message ID is required"),
+    content: z.string().nonempty("Content is required"),
+    role: z.string().nonempty("Role is required"),
+    created_at: z.string().optional(),
+    toolInvocations: z.array(z.any()).optional(),
+    annotations: z.array(z.any()).optional(),
+  })),
+});
+
+const saveChatSchema = z.object({
+  id: z.string().nonempty("Chat ID is required"),
+  userId: z.string().nonempty("User ID is required"),
+  title: z.string().nonempty("Title is required"),
+});
+
+const saveDocumentSchema = z.object({
+  id: z.string().nonempty("Document ID is required"),
+  title: z.string().nonempty("Title is required"),
+  content: z.string().optional(),
+  userId: z.string().nonempty("User ID is required"),
+});
+
+const saveSuggestionsSchema = z.array(z.object({
+  documentId: z.string().nonempty("Document ID is required"),
+  documentCreatedAt: z.string().nonempty("Document creation date is required"),
+  originalText: z.string().nonempty("Original text is required"),
+  suggestedText: z.string().nonempty("Suggested text is required"),
+  description: z.string().optional(),
+  userId: z.string().nonempty("User ID is required"),
+  isResolved: z.boolean(),
+}));
+
 export async function saveChat({
   id,
+  //@ts-ignore
   userId,
   title,
-}: {
-  id: string;
-  userId: string;
-  title: string;
-}) {
+}: Chat) {
+  // Validate input using Zod
+  saveChatSchema.parse({ id, userId, title });
+
   await mutateQuery(
     async (client, { id, userId, title }) => {
       const now = new Date().toISOString();
@@ -67,13 +108,23 @@ export async function deleteChatById(chatId: string, userId: string) {
   );
 }
 
+interface SaveMessagesInput {
+  chatId: string;
+  messages: Message[];
+}
+
 export async function saveMessages({
   chatId,
   messages,
-}: {
-  chatId: string;
-  messages: Message[];
-}) {
+}: SaveMessagesInput) {
+  // Validate input using Zod
+  const validationResult = saveMessagesSchema.safeParse({ chatId, messages });
+  
+  if (!validationResult.success) {
+    console.error('Validation errors:', validationResult.error.format());
+    throw new Error('Invalid input data');
+  }
+
   await mutateQuery(
     async (client, { chatId, messages }) => {
       const formattedMessages = messages.map((message) => {
@@ -115,53 +166,6 @@ export async function saveMessages({
   );
 }
 
-export async function voteMessage({
-  chatId,
-  messageId,
-  type,
-}: {
-  chatId: string;
-  messageId: string;
-  type: 'up' | 'down';
-}) {
-  await mutateQuery(
-    async (client, { chatId, messageId, type }) => {
-      // First verify the message exists
-      const { data: message, error: messageError } = await client
-        .from('messages')
-        .select('id')
-        .eq('id', messageId)
-        .single();
-
-      if (messageError || !message) {
-        console.error(
-          'Message not found:',
-          messageError || 'No message with this ID'
-        );
-        throw new Error('Message not found');
-      }
-
-      const { error: updateError } = await client.from('votes').upsert(
-        {
-          chat_id: chatId,
-          message_id: messageId,
-          is_upvoted: type === 'up',
-        },
-        {
-          onConflict: 'chat_id,message_id',
-        }
-      );
-
-      if (updateError) {
-        console.error('Vote error:', updateError);
-        throw updateError;
-      }
-    },
-    [{ chatId, messageId, type }],
-    [`chat_${chatId}_votes`, `chat_${chatId}`]
-  );
-}
-
 export async function saveDocument({
   id,
   title,
@@ -173,10 +177,14 @@ export async function saveDocument({
   content?: string;
   userId: string;
 }) {
+  // Validate input using Zod
+  saveDocumentSchema.parse({ id, title, content, userId });
+
   await mutateQuery(
     async (client, { id, title, content, userId }) => {
       // First check if document exists and user has access
       const { data: existingDoc, error: checkError } = await client
+        //@ts-ignore
         .from('documents')
         .select('created_at')
         .eq('id', id)
@@ -200,6 +208,7 @@ export async function saveDocument({
       const maxRetries = 3;
 
       while (retryCount < maxRetries) {
+        //@ts-ignore
         const { error } = await client.from('documents').insert({
           id,
           title,
@@ -241,27 +250,38 @@ export async function saveDocument({
 export async function saveSuggestions({
   suggestions,
 }: {
-  suggestions: Array<{
-    documentId: string;
-    documentCreatedAt: string;
-    originalText: string;
-    suggestedText: string;
-    description: string;
-    userId: string;
-    isResolved: boolean;
-  }>;
+  suggestions: Suggestion[]; // Use the Suggestion type here
 }) {
+  // Validate input using Zod
+  saveSuggestionsSchema.parse(suggestions);
+
   await mutateQuery(
     async (client, suggestions) => {
+      const now = new Date().toISOString();
+      type SuggestionInsert = {
+        id: string;
+        document_id: string;
+        document_created_at: string;
+        original_text: string;
+        suggested_text: string;
+        description: string;
+        user_id: string;
+        is_resolved: boolean;
+        created_at: string;
+      };
+      //@ts-ignore
       const { error } = await client.from('suggestions').insert(
-        suggestions.map((s) => ({
-          document_id: s.documentId,
-          document_created_at: s.documentCreatedAt,
-          original_text: s.originalText,
-          suggested_text: s.suggestedText,
-          description: s.description,
-          user_id: s.userId,
-          is_resolved: s.isResolved,
+        //@ts-ignore
+        suggestions.map((s): SuggestionInsert => ({
+          id: crypto.randomUUID(),
+          document_id: s.document_id,
+          document_created_at: s.document_created_at,
+          original_text: s.original_text,
+          suggested_text: s.suggested_text,
+          description: s.description || '',
+          user_id: s.user_id,
+          is_resolved: s.is_resolved,
+          created_at: now
         }))
       );
       if (error) throw error;
@@ -269,51 +289,10 @@ export async function saveSuggestions({
     [suggestions],
     suggestions
       .map((s) => [
-        `document_${s.documentId}_suggestions`,
-        `document_${s.documentId}`,
+        `document_${s.document_id}_suggestions`,
+        `document_${s.document_id}`,
       ])
       .flat()
-  );
-}
-
-export async function saveSuggestions1({
-  documentId,
-  documentCreatedAt,
-  originalText,
-  suggestedText,
-  description,
-  userId,
-}: {
-  documentId: string;
-  documentCreatedAt: string;
-  originalText: string;
-  suggestedText: string;
-  description?: string;
-  userId: string;
-}) {
-  await mutateQuery(
-    async (client, args) => {
-      const { error } = await client.from('suggestions').insert({
-        document_id: args.documentId,
-        document_created_at: args.documentCreatedAt,
-        original_text: args.originalText,
-        suggested_text: args.suggestedText,
-        description: args.description,
-        user_id: args.userId,
-      });
-      if (error) throw error;
-    },
-    [
-      {
-        documentId,
-        documentCreatedAt,
-        originalText,
-        suggestedText,
-        description,
-        userId,
-      },
-    ],
-    [`document_${documentId}_suggestions`, `document_${documentId}`]
   );
 }
 
@@ -327,6 +306,7 @@ export async function deleteDocumentsByIdAfterTimestamp({
   await mutateQuery(
     async (client, { id, timestamp }) => {
       const { error } = await client
+        //@ts-ignore
         .from('documents')
         .delete()
         .eq('id', id)

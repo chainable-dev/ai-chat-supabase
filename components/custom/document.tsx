@@ -1,7 +1,7 @@
 import { SetStateAction } from 'react';
 
 import { UIBlock } from './block';
-import { FileIcon, LoaderIcon, MessageIcon, PencilEditIcon } from './icons';
+import { FaFile, FaSpinner, FaComment, FaEdit } from 'react-icons/fa';
 
 const getActionText = (type: 'create' | 'update' | 'request-suggestions') => {
   switch (type) {
@@ -54,11 +54,11 @@ export function DocumentToolResult({
     >
       <div className="text-muted-foreground mt-1">
         {type === 'create' ? (
-          <FileIcon />
+          <FaFile />
         ) : type === 'update' ? (
-          <PencilEditIcon />
+          <FaEdit />
         ) : type === 'request-suggestions' ? (
-          <MessageIcon />
+          <FaComment />
         ) : null}
       </div>
       <div className="">
@@ -79,11 +79,11 @@ export function DocumentToolCall({ type, args }: DocumentToolCallProps) {
       <div className="flex flex-row gap-3 items-start">
         <div className="text-zinc-500 mt-1">
           {type === 'create' ? (
-            <FileIcon />
+            <FaFile />
           ) : type === 'update' ? (
-            <PencilEditIcon />
+            <FaEdit />
           ) : type === 'request-suggestions' ? (
-            <MessageIcon />
+            <FaComment />
           ) : null}
         </div>
 
@@ -92,7 +92,7 @@ export function DocumentToolCall({ type, args }: DocumentToolCallProps) {
         </div>
       </div>
 
-      <div className="animate-spin mt-1">{<LoaderIcon />}</div>
+      <div className="animate-spin mt-1">{<FaSpinner />}</div>
     </div>
   );
 }
