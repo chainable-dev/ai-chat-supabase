@@ -39,7 +39,7 @@ export const login = async (
     const { data: userData, error: userDataError } = await supabase
       .from('user_data')
       .select('*')
-      .eq('id', user.id)
+      .eq('id', user?.id)
       .single();
 
     if (userDataError) {
@@ -103,7 +103,7 @@ export const register = async (
     const { error: insertError } = await supabase
       .from('users')
       .insert({
-        id: user.id,
+        id: user?.id,
         username: validatedData.email.split('@')[0], // Example username logic
         email: validatedData.email,
       });

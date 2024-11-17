@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useSession } from '@supabase/auth-helpers-react';
+import { getSession } from '@/lib/supabase/server';
 
 const ProtectedPage = () => {
-  const router = useRouter();
-  const session = useSession();
+    const router = useRouter();
+    const session = getSession();
 
   useEffect(() => {
     if (!session) {
