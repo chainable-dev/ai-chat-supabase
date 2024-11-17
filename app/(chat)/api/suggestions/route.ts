@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     return new Response('Unauthorized', { status: 401 });
   }
 
-  const suggestions = await getSuggestionsByDocumentId(documentId);
+  const suggestions = await getSuggestionsByDocumentId(documentId, user.id);
 
   const [suggestion] = suggestions;
 
