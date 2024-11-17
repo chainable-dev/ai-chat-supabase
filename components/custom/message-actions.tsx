@@ -6,7 +6,7 @@ import { useCopyToClipboard } from 'usehooks-ts';
 import { Vote } from '@/lib/supabase/types';
 import { getMessageIdFromAnnotations } from '@/lib/utils';
 
-import { FaCopy, FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
+import { FaCopy, FaThumbsDown, FaThumbsUp, FaSpinner } from 'react-icons/fa';
 import { Button } from '../ui/button';
 import {
   Tooltip,
@@ -29,7 +29,7 @@ export function MessageActions({
   const { mutate } = useSWRConfig();
   const [_, copyToClipboard] = useCopyToClipboard();
 
-  if (isLoading) return null;
+  if (isLoading) return <FaSpinner className="animate-spin" size={24} />;
   if (message.role === 'user') return null;
   if (message.toolInvocations && message.toolInvocations.length > 0)
     return null;
