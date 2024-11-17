@@ -1,5 +1,6 @@
 import { AuthError } from '@supabase/supabase-js';
 import type { Client, Database } from '../lib/supabase/types';
+import { supabase } from './storage';
 
 type Tables = Database['public']['Tables'];
 
@@ -337,4 +338,17 @@ export function handleSupabaseError(error: PostgrestError | null) {
   }
 
   throw error;
+}
+
+export async function fetchFiles() {
+  const { data, error } = await supabase
+    .from('file_uploads')
+    .select('*');
+
+  if (error) {
+    console.error('Error fetching files:', error);
+    return [];
+  }
+
+  return data;
 }

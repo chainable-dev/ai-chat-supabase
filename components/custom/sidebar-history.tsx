@@ -50,31 +50,23 @@ type GroupedChats = {
 
 const fetcher = async (): Promise<Chat[]> => {
   try {
-    const supabase = createClient();
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-
-    if (userError || !user) {
-      console.error('Auth error:', userError);
-      return [];
-    }
-
-    const { data: chats, error: chatsError } = await supabase
+    const { data, error } = await supabase
       .from('chats')
       .select('*')
-      .eq('user_id', user.id)
       .order('created_at', { ascending: false });
 
-    if (chatsError) {
-      console.error('Chats fetch error:', chatsError);
-      return [];
+    if (error) {
+      console.error('Chats fetch error:', {
+        code: error.code,
+        details: error.details,
+        message: error.message
+      });
+      throw error;
     }
 
-    return chats || [];
-  } catch (error) {
-    console.error('Fetcher error:', error);
+    return data || [];
+  } catch (err) {
+    console.error('Chats fetch error:', err);
     return [];
   }
 };
