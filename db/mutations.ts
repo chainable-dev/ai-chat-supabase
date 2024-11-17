@@ -1,11 +1,11 @@
 import { revalidateTag } from 'next/cache';
-import { createClient } from '../lib/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import {
   handleDatabaseError,
   PostgrestError,
   type Client,
   type Message,
-} from '../lib/supabase/types';
+} from '@/lib/supabase/types';
 import { z } from 'zod';
 
 const getSupabase = async () => createClient();
