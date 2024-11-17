@@ -34,10 +34,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@/components/ui/sidebar';
-import { getChatsByUserIdQuery } from '@/db/queries';
-import { supabase } from '@/lib/supabase/client';
-import { Database } from '@/lib/supabase/types';
+} from '../../components/ui/sidebar';
+import { getChatsByUserIdQuery } from '../../db/queries';
+import { supabase } from '../../lib/supabase/client';
+import { type Database } from '../../lib/supabase/types';
 import { EmptyState } from './preview-attachment';
 
 type Chat = Database['public']['Tables']['chats']['Row'];
