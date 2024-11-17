@@ -77,32 +77,6 @@ export const MessageIcon = ({ size = 16, className }: IconProps) => (
   </svg>
 );
 
-export const LoaderIcon = ({ size = 16, className }: IconProps) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 16 16"
-    fill="none"
-    className={cn("animate-spin", className)}
-  >
-    <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="2" />
-    <path d="M8 1v2M8 13v2M1 8h2M13 8h2" stroke="currentColor" strokeWidth="2" />
-  </svg>
-);
-
-export const TrashIcon = ({ size = 16, className }: IconProps) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 16 16"
-    fill="none"
-    className={cn("fill-current", className)}
-  >
-    <path d="M2 2h12v2H2V2zM4 6h8v10H4V6z" fill="currentColor" />
-    <path d="M6 6v10M10 6v10" stroke="currentColor" strokeWidth="2" />
-  </svg>
-);
-
 export const SidebarLeftIcon = ({ size = 16, className }: IconProps) => (
   <svg
     width={size}
@@ -132,55 +106,6 @@ export const ChevronDownIcon = ({ size = 16, className }: IconProps) => (
       clipRule="evenodd"
       d="M12.0607 6.75L11.5303 7.28033L8.70711 10.1036C8.31658 10.4941 7.68342 10.4941 7.29289 10.1036L4.46967 7.28033L3.93934 6.75L5 5.68934L5.53033 6.21967L8 8.68934L10.4697 6.21967L11 5.68934L12.0607 6.75Z"
     />
-  </svg>
-);
-
-export const SupabaseIcon = ({ size = 32, className }: IconProps) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 109 113"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={cn(className)}
-  >
-    <path
-      d="M63.708 110.284C60.848 113.885 55.05 111.912 54.982 107.314L53.975 40.0627H99.194C107.384 40.0627 111.952 49.5228 106.859 55.9374L63.708 110.284Z"
-      fill="url(#paint0_linear)"
-    />
-    <path
-      d="M63.708 110.284C60.848 113.885 55.05 111.912 54.982 107.314L53.975 40.0627H99.194C107.384 40.0627 111.952 49.5228 106.859 55.9374L63.708 110.284Z"
-      fill="url(#paint1_linear)"
-      fillOpacity="0.2"
-    />
-    <path
-      d="M45.317 2.07103C48.177 -1.53037 53.975 0.442937 54.043 5.041L54.485 72.2922H9.266C1.07642 72.2922 -3.49236 62.8321 1.60138 56.4175L45.317 2.07103Z"
-      fill="#3ECF8E"
-    />
-    <defs>
-      <linearGradient
-        id="paint0_linear"
-        x1="53.975"
-        y1="54.974"
-        x2="94.163"
-        y2="71.829"
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop stopColor="#249361" />
-        <stop offset="1" stopColor="#3ECF8E" />
-      </linearGradient>
-      <linearGradient
-        id="paint1_linear"
-        x1="36.156"
-        y1="30.578"
-        x2="54.484"
-        y2="65.081"
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop />
-        <stop offset="1" stopOpacity="0" />
-      </linearGradient>
-    </defs>
   </svg>
 );
 
