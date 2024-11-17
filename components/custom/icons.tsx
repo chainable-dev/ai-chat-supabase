@@ -29,6 +29,80 @@ export const VercelIcon = ({ size = 16, className }: IconProps) => (
   </svg>
 );
 
+export const ArrowUpIcon = ({ size = 16, className }: IconProps) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    className={cn("fill-current", className)}
+  >
+    <path d="M8 1L3 6h2v6h6V6h2L8 1z" />
+  </svg>
+);
+
+export const PaperclipIcon = ({ size = 16, className }: IconProps) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    className={cn("fill-current", className)}
+  >
+    <path d="M4 8l4-4 4 4-4 4-4-4z" />
+  </svg>
+);
+
+export const StopIcon = ({ size = 16, className }: IconProps) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    className={cn("fill-current", className)}
+  >
+    <rect width="16" height="16" />
+  </svg>
+);
+
+export const MessageIcon = ({ size = 16, className }: IconProps) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    className={cn("fill-current", className)}
+  >
+    <path d="M2.891 10.403l.092.23c.246.612.517 1.472.517 2.367 0 .359-.044.713-.112 1.05.308-.105.626-.234.941-.392.55-.274 1.01-.597 1.38-.906l.515-.43.663.097c.36.053.732.08 1.113.08 3.784 0 6.5-2.644 6.5-5.5S11.784 2 8 2C4.216 2 1.5 4.644 1.5 7.5c0 1.182.442 2.293 1.231 3.215l.16.188zM2.814 15.765C1.761 16 1 16 1 16s.433-.69.729-1.563c.154-.454.271-.956.271-1.437 0-.617-.193-1.271-.409-1.81C.592 10.022 0 8.572 0 7c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7c-.453 0-.897-.033-1.329-.096-.445.371-1.002.762-1.671 1.096-.766.383-1.533.62-2.186.765z" />
+  </svg>
+);
+
+export const LoaderIcon = ({ size = 16, className }: IconProps) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    className={cn("animate-spin", className)}
+  >
+    <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="2" />
+    <path d="M8 1v2M8 13v2M1 8h2M13 8h2" stroke="currentColor" strokeWidth="2" />
+  </svg>
+);
+
+export const TrashIcon = ({ size = 16, className }: IconProps) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    className={cn("fill-current", className)}
+  >
+    <path d="M2 2h12v2H2V2zM4 6h8v10H4V6z" fill="currentColor" />
+    <path d="M6 6v10M10 6v10" stroke="currentColor" strokeWidth="2" />
+  </svg>
+);
+
 export const SidebarLeftIcon = ({ size = 16, className }: IconProps) => (
   <svg
     width={size}
@@ -110,4 +184,4 @@ export const SupabaseIcon = ({ size = 32, className }: IconProps) => (
   </svg>
 );
 
-// Add more icons as needed...
+// Add any other icons you need...
