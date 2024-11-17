@@ -27,7 +27,16 @@ const nextConfig = {
       use: 'raw-loader'
     });
     return config;
-  }
+  },
+  async redirects() {
+    return [
+      {
+        source: '/protected-route',
+        destination: '/login',
+        permanent: false,
+      },
+    ];
+  },
 }
 
 module.exports = nextConfig; 
