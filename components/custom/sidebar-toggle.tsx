@@ -17,6 +17,7 @@ export function SidebarToggle({
         onClick={toggleSidebar}
         variant="outline"
         className={`md:px-2 md:h-fit ${className}`}
+        aria-label="Toggle Sidebar"
       >
         <FaColumns size={16} />
       </Button>

@@ -12,7 +12,9 @@ export interface UISuggestion extends Suggestion {
   id: string;
   suggested_text: string;
   user_id: string;
-  
+  suggestion: string;
+  description: string;
+
 }
 
 interface Position {

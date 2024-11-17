@@ -327,11 +327,8 @@ export function handleDatabaseError(error: PostgrestError | null) {
 }
 
 // Add Document type
-export type Document = Database['public']['Tables']['documents']['Row'];
 export type Vote = Database['public']['Tables']['votes']['Row'];
 export type Chat = Database['public']['Tables']['chats']['Row'];
-
-export type Suggestion = Database['public']['Tables']['suggestions']['Row'];
 
 // Add DatabaseMessage type to match the database schema
 export interface DatabaseMessage {

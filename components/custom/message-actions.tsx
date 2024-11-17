@@ -57,7 +57,7 @@ export function MessageActions({
           <TooltipTrigger asChild>
             <Button
               className="py-1 px-2 h-fit text-muted-foreground !pointer-events-auto"
-              disabled={vote && vote.is_upvoted}
+              disabled={vote && vote.vote === 1}
               variant="outline"
               onClick={async () => {
                 const messageId = getMessageIdFromAnnotations(message);
@@ -74,13 +74,13 @@ export function MessageActions({
                 toast.promise(upvote, {
                   loading: 'Upvoting Response...',
                   success: () => {
-                    mutate<Array<Vote>>(
+                    mutate(
                       `/api/vote?chatId=${chatId}`,
                       (currentVotes) => {
                         if (!currentVotes) return [];
 
                         const votesWithoutCurrent = currentVotes.filter(
-                          (vote) => vote.message_id !== message.id
+                          (vote: Vote) => vote.chat_id !== chatId
                         );
 
                         return [
@@ -113,7 +113,7 @@ export function MessageActions({
             <Button
               className="py-1 px-2 h-fit text-muted-foreground !pointer-events-auto"
               variant="outline"
-              disabled={vote && !vote.is_upvoted}
+              disabled={vote && vote.vote === -1}
               onClick={async () => {
                 const messageId = getMessageIdFromAnnotations(message);
 
@@ -129,13 +129,13 @@ export function MessageActions({
                 toast.promise(downvote, {
                   loading: 'Downvoting Response...',
                   success: () => {
-                    mutate<Array<Vote>>(
+                    mutate(
                       `/api/vote?chatId=${chatId}`,
                       (currentVotes) => {
                         if (!currentVotes) return [];
 
                         const votesWithoutCurrent = currentVotes.filter(
-                          (vote) => vote.message_id !== message.id
+                          (vote: Vote) => vote.chat_id !== chatId
                         );
 
                         return [
