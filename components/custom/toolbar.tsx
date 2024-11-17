@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/tooltip';
 import { sanitizeUIMessages } from '@/lib/utils';
 
-import { FaSomeIcon } from 'react-icons/fa';
+import { FaSpinner } from 'react-icons/fa';
 import { Button } from '../ui/button';
 
 type ToolProps = {
@@ -124,7 +124,7 @@ const Tool = ({
             handleSelect();
           }}
         >
-          {selectedTool === type ? <FaSomeIcon /> : icon}
+          {selectedTool === type ? <FaSpinner   /> : icon}
         </motion.div>
       </TooltipTrigger>
       <TooltipContent
@@ -231,7 +231,7 @@ const ReadingLevelSelector = ({
                 }
               }}
             >
-              {currentLevel === 2 ? <FaSomeIcon /> : <FaSomeIcon />}
+              {currentLevel === 2 ? <FaSpinner /> : <FaSpinner />}
             </motion.div>
           </TooltipTrigger>
           <TooltipContent
@@ -278,7 +278,7 @@ export const Tools = ({
             <Tool
               type="adjust-reading-level"
               description="Adjust reading level"
-              icon={<FaSomeIcon />}
+              icon={<FaSpinner />}
               selectedTool={selectedTool}
               setSelectedTool={setSelectedTool}
               append={append}
@@ -288,7 +288,7 @@ export const Tools = ({
             <Tool
               type="request-suggestions"
               description="Request suggestions"
-              icon={<FaSomeIcon />}
+              icon={<FaSpinner />}
               selectedTool={selectedTool}
               setSelectedTool={setSelectedTool}
               append={append}
@@ -301,7 +301,7 @@ export const Tools = ({
       <Tool
         type="final-polish"
         description="Add final polish"
-        icon={<FaSomeIcon />}
+        icon={<FaSpinner />}
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
         isToolbarVisible={isToolbarVisible}
@@ -430,7 +430,7 @@ export const Toolbar = ({
               setMessages((messages) => sanitizeUIMessages(messages));
             }}
           >
-            <FaSomeIcon />
+            <FaSpinner />
           </motion.div>
         ) : selectedTool === 'adjust-reading-level' ? (
           <ReadingLevelSelector

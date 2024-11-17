@@ -9,6 +9,8 @@ import { Suggestion } from '@/lib/supabase/types';
 export interface UISuggestion extends Suggestion {
   selectionStart: number;
   selectionEnd: number;
+  id: string;
+  
 }
 
 interface Position {
