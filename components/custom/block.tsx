@@ -23,7 +23,6 @@ import { FaCopy, FaTimes, FaRedo, FaUndo } from 'react-icons/fa';
 import { TbDelta } from 'react-icons/tb';
 
 import { fetcher } from '@/lib/utils';
-a
 import { DiffView } from './diffview';
 import { DocumentSkeleton } from './document-skeleton';
 import { Editor } from './editor';

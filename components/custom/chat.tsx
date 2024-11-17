@@ -98,7 +98,7 @@ export function Chat({
               isLoading={isLoading && messages.length - 1 === index}
               vote={
                 votes
-                  ? votes.find((vote) => vote.message_id === message.id)
+                  ? votes.find((vote) => vote.chat_id === id)
                   : undefined
               }
             />
@@ -122,12 +122,8 @@ export function Chat({
             setInput={setInput}
             handleSubmit={handleSubmit}
             isLoading={isLoading}
-            stop={stop}
             attachments={attachments}
             setAttachments={setAttachments}
-            messages={messages}
-            setMessages={setMessages}
-            append={append}
           />
         </form>
       </div>
