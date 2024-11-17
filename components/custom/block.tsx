@@ -19,13 +19,14 @@ import {
   useDebounceCallback,
   useWindowSize,
 } from 'usehooks-ts';
+import { FaCopy, FaTimes, FaRedo, FaUndo } from 'react-icons/fa';
+import { TbDelta } from 'react-icons/tb';
 
 import { fetcher } from '@/lib/utils';
 
 import { DiffView } from './diffview';
 import { DocumentSkeleton } from './document-skeleton';
 import { Editor } from './editor';
-import { CopyIcon, CrossIcon, DeltaIcon, RedoIcon, UndoIcon } from './icons';
 import { PreviewMessage } from './message';
 import { MultimodalInput } from './multimodal-input';
 import { Toolbar } from './toolbar';

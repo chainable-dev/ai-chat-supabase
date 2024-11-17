@@ -9,7 +9,7 @@ import { SidebarToggle } from '@/components/custom/sidebar-toggle';
 import { Button } from '@/components/ui/button';
 import { BetterTooltip } from '@/components/ui/tooltip';
 import { useSidebar } from '@/components/ui/sidebar';
-import { PlusIcon, VercelIcon } from './icons';
+import { FaPlus, FaRocket } from 'react-icons/fa';
 
 interface ChatHeaderProps {
   selectedModelId: string;
@@ -37,7 +37,7 @@ export function ChatHeader({ selectedModelId }: ChatHeaderProps) {
             onClick={handleNewChat}
             aria-label="New Chat"
           >
-            <PlusIcon className="h-4 w-4" title="New Chat" />
+            <FaPlus className="h-4 w-4" title="New Chat" />
             <span className="md:sr-only">New Chat</span>
           </Button>
         </BetterTooltip>
@@ -58,7 +58,7 @@ export function ChatHeader({ selectedModelId }: ChatHeaderProps) {
           rel="noopener noreferrer"
           aria-label="Deploy with Vercel"
         >
-          <VercelIcon className="h-4 w-4" title="Deploy with Vercel" />
+          <FaRocket className="h-4 w-4" title="Deploy with Vercel" />
           <span className="ml-2">Deploy with Vercel</span>
         </Link>
       </Button>

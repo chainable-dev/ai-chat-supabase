@@ -3,8 +3,8 @@ import { ComponentProps } from 'react';
 import { SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import { BetterTooltip } from '@/components/ui/tooltip';
 
-import { SidebarLeftIcon } from './icons';
 import { Button } from '../ui/button';
+import { FaBars } from 'react-icons/fa';
 
 export function SidebarToggle({
   className,
@@ -18,7 +18,7 @@ export function SidebarToggle({
         variant="outline"
         className={`md:px-2 md:h-fit ${className}`}
       >
-        <SidebarLeftIcon size={16} />
+        <FaBars size={16} />
       </Button>
     </BetterTooltip>
   );

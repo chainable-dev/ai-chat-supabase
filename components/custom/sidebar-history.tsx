@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import useSWR from 'swr';
 
-import { MoreHorizontalIcon, TrashIcon } from '@/components/custom/icons';
+import { FaEllipsisH, FaTrash } from 'react-icons/fa';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -103,7 +103,7 @@ const ChatItem = ({
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground mr-0.5"
           showOnHover={!isActive}
         >
-          <MoreHorizontalIcon />
+          <FaEllipsisH />
           <span className="sr-only">More</span>
         </SidebarMenuAction>
       </DropdownMenuTrigger>
@@ -112,7 +112,7 @@ const ChatItem = ({
           className="cursor-pointer text-destructive focus:bg-destructive/15 focus:text-destructive dark:text-red-500"
           onSelect={() => onDelete(chat.id)}
         >
-          <TrashIcon />
+          <FaTrash />
           <span>Delete</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

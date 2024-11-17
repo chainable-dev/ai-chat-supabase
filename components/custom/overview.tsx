@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-
-import { MessageIcon, SupabaseIcon, VercelIcon } from './icons';
+import { MessageIcon, SupabaseIcon, VercelIcon } from 'react-icons/fa';
 
 export const Overview = () => {
   return (
@@ -17,7 +16,7 @@ export const Overview = () => {
         <p className="flex flex-row justify-center gap-4 items-center">
           <VercelIcon size={32} />
           <span>+</span>
-          <SupabaseIcon />
+          <SupabaseIcon size={32} />
           <span>+</span>
           <MessageIcon size={32} />
         </p>

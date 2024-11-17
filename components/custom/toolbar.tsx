@@ -19,13 +19,7 @@ import {
 } from '@/components/ui/tooltip';
 import { sanitizeUIMessages } from '@/lib/utils';
 
-import {
-  ArrowUpIcon,
-  MessageIcon,
-  PenIcon,
-  StopIcon,
-  SummarizeIcon,
-} from './icons';
+import { FaSomeIcon } from 'react-icons/fa';
 import { Button } from '../ui/button';
 
 type ToolProps = {
@@ -130,7 +124,7 @@ const Tool = ({
             handleSelect();
           }}
         >
-          {selectedTool === type ? <ArrowUpIcon /> : icon}
+          {selectedTool === type ? <FaSomeIcon /> : icon}
         </motion.div>
       </TooltipTrigger>
       <TooltipContent
@@ -237,7 +231,7 @@ const ReadingLevelSelector = ({
                 }
               }}
             >
-              {currentLevel === 2 ? <SummarizeIcon /> : <ArrowUpIcon />}
+              {currentLevel === 2 ? <FaSomeIcon /> : <FaSomeIcon />}
             </motion.div>
           </TooltipTrigger>
           <TooltipContent
@@ -284,7 +278,7 @@ export const Tools = ({
             <Tool
               type="adjust-reading-level"
               description="Adjust reading level"
-              icon={<SummarizeIcon />}
+              icon={<FaSomeIcon />}
               selectedTool={selectedTool}
               setSelectedTool={setSelectedTool}
               append={append}
@@ -294,7 +288,7 @@ export const Tools = ({
             <Tool
               type="request-suggestions"
               description="Request suggestions"
-              icon={<MessageIcon />}
+              icon={<FaSomeIcon />}
               selectedTool={selectedTool}
               setSelectedTool={setSelectedTool}
               append={append}
@@ -307,7 +301,7 @@ export const Tools = ({
       <Tool
         type="final-polish"
         description="Add final polish"
-        icon={<PenIcon />}
+        icon={<FaSomeIcon />}
         selectedTool={selectedTool}
         setSelectedTool={setSelectedTool}
         isToolbarVisible={isToolbarVisible}
@@ -436,7 +430,7 @@ export const Toolbar = ({
               setMessages((messages) => sanitizeUIMessages(messages));
             }}
           >
-            <StopIcon />
+            <FaSomeIcon />
           </motion.div>
         ) : selectedTool === 'adjust-reading-level' ? (
           <ReadingLevelSelector

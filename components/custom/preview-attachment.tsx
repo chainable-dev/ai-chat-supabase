@@ -1,7 +1,6 @@
 import { Attachment } from 'ai';
 import Image from 'next/image';
-
-import { LoaderIcon } from './icons';
+import { FaSpinner } from 'react-icons/fa';
 
 export const PreviewAttachment = ({
   attachment,
@@ -34,7 +33,7 @@ export const PreviewAttachment = ({
 
         {isUploading && (
           <div className="animate-spin absolute text-zinc-500">
-            <LoaderIcon />
+            <FaSpinner />
           </div>
         )}
       </div>

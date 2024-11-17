@@ -6,7 +6,7 @@ import { useCopyToClipboard } from 'usehooks-ts';
 import { Vote } from '@/lib/supabase/types';
 import { getMessageIdFromAnnotations } from '@/lib/utils';
 
-import { CopyIcon, ThumbDownIcon, ThumbUpIcon } from './icons';
+import { FaCopy, FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
 import { Button } from '../ui/button';
 import {
   Tooltip,
@@ -47,7 +47,7 @@ export function MessageActions({
                 toast.success('Copied to clipboard!');
               }}
             >
-              <CopyIcon />
+              <FaCopy />
             </Button>
           </TooltipTrigger>
           <TooltipContent>Copy</TooltipContent>
@@ -102,7 +102,7 @@ export function MessageActions({
                 });
               }}
             >
-              <ThumbUpIcon />
+              <FaThumbsUp />
             </Button>
           </TooltipTrigger>
           <TooltipContent>Upvote Response</TooltipContent>
@@ -157,7 +157,7 @@ export function MessageActions({
                 });
               }}
             >
-              <ThumbDownIcon />
+              <FaThumbsDown />
             </Button>
           </TooltipTrigger>
           <TooltipContent>Downvote Response</TooltipContent>

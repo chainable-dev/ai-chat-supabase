@@ -6,7 +6,7 @@ import { useWindowSize } from 'usehooks-ts';
 
 import { UISuggestion } from '@/lib/editor/suggestions';
 
-import { CrossIcon, MessageIcon } from './icons';
+import { FaTimes, FaComment } from 'react-icons/fa';
 import { Button } from '../ui/button';
 
 export const Suggestion = ({
@@ -29,7 +29,7 @@ export const Suggestion = ({
           }}
           whileHover={{ scale: 1.1 }}
         >
-          <MessageIcon size={windowWidth && windowWidth < 768 ? 16 : 14} />
+          <FaComment size={windowWidth && windowWidth < 768 ? 16 : 14} />
         </motion.div>
       ) : (
         <motion.div
@@ -52,7 +52,7 @@ export const Suggestion = ({
                 setIsExpanded(false);
               }}
             >
-              <CrossIcon size={12} />
+              <FaTimes size={12} />
             </div>
           </div>
           <div>{suggestion.description}</div>

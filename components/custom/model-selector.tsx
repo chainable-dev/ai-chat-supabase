@@ -12,8 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-
-import { CheckCirclFillIcon, ChevronDownIcon } from './icons';
+import { FaCheckCircle, FaChevronDown } from 'react-icons/fa';
 
 export function ModelSelector({
   selectedModelId,
@@ -41,7 +40,7 @@ export function ModelSelector({
       >
         <Button variant="outline" className="md:px-2 md:h-[34px]">
           {selectModel?.label}
-          <ChevronDownIcon />
+          <FaChevronDown />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="min-w-[300px]">
@@ -68,7 +67,7 @@ export function ModelSelector({
               )}
             </div>
             <div className="text-primary dark:text-primary-foreground opacity-0 group-data-[active=true]/item:opacity-100">
-              <CheckCirclFillIcon />
+              <FaCheckCircle />
             </div>
           </DropdownMenuItem>
         ))}
