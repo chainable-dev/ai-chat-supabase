@@ -1,10 +1,31 @@
+import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
-import { upload } from '@/lib/storage';
-import type { Database } from '@/lib/supabase/types';
+import { Database } from '../../../../../lib/supabase/types';
 
 function sanitizeFileName(fileName: string): string {
   return fileName.replace(/[^a-zA-Z0-9.-]/g, '_').toLowerCase();
+}
+
+async function upload(supabase: ReturnType<typeof createClient>, {
+  file,
+  path,
+}: {
+  file: File,
+  path: string[]
+}) {
+  const { data, error } = await supabase.storage
+    .from('chat_attachments')
+    .upload(path.join('/'), file, {
+      upsert: true,
+    });
+
+  if (error) throw error;
+
+  const { data: { publicUrl } } = supabase.storage
+    .from('chat_attachments')
+    .getPublicUrl(path.join('/'));
+
+  return publicUrl;
 }
 
 export async function POST(req: Request) {
@@ -31,7 +52,10 @@ export async function POST(req: Request) {
       );
     }
 
-    const supabase = await createClient();
+    const supabase = createClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
 
     // Log auth status
     const {
@@ -65,7 +89,7 @@ export async function POST(req: Request) {
       const { data: buckets, error: bucketError } =
         await supabase.storage.listBuckets();
       console.log('Storage buckets:', {
-        availableBuckets: buckets?.map((bucket) => ({
+        availableBuckets: buckets?.map((bucket: { id: string; name: string; public: boolean }) => ({
           id: bucket.id,
           name: bucket.name,
           public: bucket.public,
@@ -74,7 +98,7 @@ export async function POST(req: Request) {
       });
 
       // Create bucket if it doesn't exist
-      if (!buckets?.some((bucket) => bucket.id === 'chat_attachments')) {
+      if (!buckets?.some((bucket: { id: string }) => bucket.id === 'chat_attachments')) {
         console.log('Creating bucket...');
         const { error: createError } = await supabase.storage.createBucket(
           'chat_attachments',

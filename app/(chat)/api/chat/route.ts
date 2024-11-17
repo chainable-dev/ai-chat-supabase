@@ -26,14 +26,14 @@ import {
   saveMessages,
   saveSuggestions,
   deleteChatById,
-} from '../../../../db/mutations';
+} from '../../../db/mutations';
 import { createClient } from '../../../../lib/supabase/server';
 import { MessageRole } from '../../../../lib/supabase/types';
 import {
   generateUUID,
   getMostRecentUserMessage,
   sanitizeResponseMessages,
-} from '../../../../lib/utils';
+} from '@/lib/utils';
 
 import { generateTitleFromUserMessage } from '../../actions';
 
