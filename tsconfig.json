@@ -25,7 +25,11 @@
     "paths": {
       "@/*": [
         "./src/*",
-        "./lib/*"
+        "./lib/*",
+        "./db/*",
+        "./ai/*",
+        "./components/*"
+        
       ]
     },
     "forceConsistentCasingInFileNames": true,
