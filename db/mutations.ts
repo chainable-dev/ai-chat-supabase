@@ -37,6 +37,29 @@ const saveMessagesSchema = z.object({
   })),
 });
 
+const saveChatSchema = z.object({
+  id: z.string().nonempty("Chat ID is required"),
+  userId: z.string().nonempty("User ID is required"),
+  title: z.string().nonempty("Title is required"),
+});
+
+const saveDocumentSchema = z.object({
+  id: z.string().nonempty("Document ID is required"),
+  title: z.string().nonempty("Title is required"),
+  content: z.string().optional(),
+  userId: z.string().nonempty("User ID is required"),
+});
+
+const saveSuggestionsSchema = z.array(z.object({
+  documentId: z.string().nonempty("Document ID is required"),
+  documentCreatedAt: z.string().nonempty("Document creation date is required"),
+  originalText: z.string().nonempty("Original text is required"),
+  suggestedText: z.string().nonempty("Suggested text is required"),
+  description: z.string().optional(),
+  userId: z.string().nonempty("User ID is required"),
+  isResolved: z.boolean(),
+}));
+
 export async function saveChat({
   id,
   userId,
@@ -46,6 +69,9 @@ export async function saveChat({
   userId: string;
   title: string;
 }) {
+  // Validate input using Zod
+  saveChatSchema.parse({ id, userId, title });
+
   await mutateQuery(
     async (client, { id, userId, title }) => {
       const now = new Date().toISOString();
@@ -150,6 +176,9 @@ export async function saveDocument({
   content?: string;
   userId: string;
 }) {
+  // Validate input using Zod
+  saveDocumentSchema.parse({ id, title, content, userId });
+
   await mutateQuery(
     async (client, { id, title, content, userId }) => {
       // First check if document exists and user has access
@@ -230,6 +259,9 @@ export async function saveSuggestions({
 }: {
   suggestions: Suggestion[];
 }) {
+  // Validate input using Zod
+  saveSuggestionsSchema.parse(suggestions);
+
   await mutateQuery(
     async (client, suggestions) => {
       const now = new Date().toISOString();
