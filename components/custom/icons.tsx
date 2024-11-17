@@ -510,7 +510,7 @@ export const InfoIcon = ({ size = 16 }: { size?: number }) => {
       <path
         fillRule="evenodd"
         clipRule="evenodd"
-        d="M16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8ZM6.25002 7H7.00002H7.75C8.30229 7 8.75 7.44772 8.75 8V11.5V12.25H7.25V11.5V8.5H7.00002H6.25002V7ZM8 6C8.55229 6 9 5.55228 9 5C9 4.44772 8.55229 4 8 4C7.44772 4 7 4.44772 7 5C7.44772 7 7.89545 7.05228 8.29289 7.14645L8.75 7.25V11.5V12.25H7.25V11.5V7.25L7.14645 7.14645C6.89545 7.05228 6.59771 7 6.25002 7Z"
+        d="M16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8ZM6.25002 7H7.00002H7.75C8.30229 7 8.75 7.44772 8.75 8V11.5V12.25H7.25V11.5V8.5H7.00002H6.25002V7ZM8 6C8.55229 6 9 5.55228 9 5C9 4.44772 8.55229 4 8 4C7.44772 4 7 4.44772 7 4.44772 7.44772 7.89545 7.05228 8.29289 7.14645L8.75 7.25V11.5V12.25H7.25V11.5V7.25L7.14645 7.14645C6.89545 7.05228 6.59771 7 6.25002 7Z"
         fill="currentColor"
       ></path>
     </svg>
@@ -738,20 +738,24 @@ export const SidebarLeftIcon = ({ size = 16 }: { size?: number }) => (
   </svg>
 );
 
-export const PlusIcon = ({ size = 16 }: { size?: number }) => (
+export const PlusIcon = ({ size = 16, className = '', title = 'Add' }: { size?: number, className?: string, title?: string }) => (
   <svg
     height={size}
-    strokeLinejoin="round"
-    viewBox="0 0 16 16"
     width={size}
-    style={{ color: 'currentcolor' }}
+    viewBox="0 0 16 16"
+    strokeLinejoin="round"
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+    aria-labelledby="plusIconTitle"
+    role="img"
   >
+    <title id="plusIconTitle">{title}</title>
     <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M8.75 1.75V1H7.25V1.75V6.75H2.25H1.5V8.25H2.25H7.25V13.25V14H8.75V13.25V8.25H13.75H14.5V6.75H13.75H8.75V1.75Z"
-      fill="currentColor"
-    ></path>
+      d="M8 1v14M1 8h14"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
   </svg>
 );
 

@@ -3,14 +3,14 @@ import { createClient } from '@/lib/supabase/server';
 import {
   handleDatabaseError,
   PostgrestError,
-  type Client,
   type Message,
 } from '@/lib/supabase/types';
+import { SupabaseClient } from '@supabase/supabase-js';
 
-const getSupabase = async () => createClient();
+const getSupabase = async (): Promise<SupabaseClient> => createClient();
 
 async function mutateQuery<T extends any[]>(
-  queryFn: (client: Client, ...args: T) => Promise<void>,
+  queryFn: (client: SupabaseClient, ...args: T) => Promise<void>,
   args: T,
   tags: string[]
 ) {
@@ -340,4 +340,13 @@ export async function deleteDocumentsByIdAfterTimestamp({
       'documents', // Invalidate all documents cache
     ]
   );
+}
+
+export async function updateUser(client: SupabaseClient, userId: string, updates: Partial<Tables['users']['Update']>) {
+  const { error } = await client
+    .from('users')
+    .update(updates)
+    .eq('id', userId);
+
+  if (error) throw error;
 }
