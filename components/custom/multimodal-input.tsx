@@ -5,7 +5,7 @@ import { useChat } from 'ai/react';
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
-import { ArrowUpIcon, PaperclipIcon } from './icons';
+import { FaArrowUp, FaPaperclip } from 'react-icons/fa';
 
 export function MultimodalInput({
   chatId,
@@ -50,13 +50,13 @@ export function MultimodalInput({
         onClick={handleSubmit}
         disabled={isLoading || input.length === 0}
       >
-        <ArrowUpIcon size={14} />
+        <FaArrowUp size={14} />
       </Button>
       <Button
         onClick={() => {/* handle file upload */}}
         variant="outline"
       >
-        <PaperclipIcon size={14} />
+        <FaPaperclip size={14} />
       </Button>
     </div>
   );
