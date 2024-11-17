@@ -8,13 +8,13 @@ import {
 } from 'ai';
 import { z } from 'zod';
 
-import { customModel } from '../../../../ai';
-import { models } from '../../../../ai/models';
+import { customModel } from '@/ai';
+import { models } from '@/ai/models';
 import {
   blocksPrompt,
   regularPrompt,
   systemPrompt,
-} from '../../../../ai/prompts';
+} from '@/ai/prompts';
 import {
   getChatById,
   getDocumentById,
@@ -26,9 +26,9 @@ import {
   saveMessages,
   saveSuggestions,
   deleteChatById,
-} from '../../../db/mutations';
-import { createClient } from '../../../../lib/supabase/server';
-import { MessageRole } from '../../../../lib/supabase/types';
+} from '@/db/mutations';
+import { createClient } from '@/lib/supabase/server';
+import { MessageRole } from '@/lib/supabase/types';
 import {
   generateUUID,
   getMostRecentUserMessage,
