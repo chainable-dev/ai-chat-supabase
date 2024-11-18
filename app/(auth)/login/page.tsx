@@ -4,11 +4,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
-
+import { signInWithGoogle } from '../actions';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { Label } from '../../../components/ui/label';
 import { signIn } from '../../../db/auth';
+import Image from 'next/image';
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,6 +33,10 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   }
+
+  const handleGoogleLogin = async () => {
+    await signInWithGoogle();
+  };
 
   return (
     <div className="flex h-[calc(100vh-theme(spacing.16))] items-center justify-center py-10">
@@ -61,6 +66,30 @@ export default function LoginPage() {
             {isLoading ? 'Loading...' : 'Login'}
           </Button>
         </form>
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
+        <Button 
+          variant="outline"
+          onClick={handleGoogleLogin}
+          className="w-full"
+        >
+          <Image
+            src="/icons8-google.svg" 
+            width={20}
+            height={20}
+            alt="Google"
+            className="mr-2"
+          />
+          Google
+        </Button>
         <div className="text-center text-sm">
           Don&apos;t have an account?{' '}
           <Link className="underline" href="/register">

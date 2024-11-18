@@ -71,16 +71,23 @@ export interface RegisterActionState {
     | 'invalid_data';
 }
 
+const registerFormSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+  fullName: z.string(),
+  profilePictureUrl: z.string().optional()
+});
+
 export const register = async (
   _: RegisterActionState,
   formData: FormData
 ): Promise<RegisterActionState> => {
   try {
-    const validatedData = authFormSchema.parse({
+    const validatedData = registerFormSchema.parse({
       email: formData.get('email'),
       password: formData.get('password'),
       fullName: formData.get('fullName'),
-      profilePictureUrl: formData.get('profilePictureUrl'),
+      profilePictureUrl: formData.get('profilePictureUrl')
     });
 
     const supabase = await createClient();
@@ -122,5 +129,17 @@ export const register = async (
 
     console.error('Unexpected error:', error);
     return { status: 'failed' };
+  }
+};
+
+export const signInWithGoogle = async () => {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+  });
+
+  if (error) {
+    console.error('Error signing in with Google:', error.message);
   }
 };
